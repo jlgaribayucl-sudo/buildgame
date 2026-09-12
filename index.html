@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Civilization: Game Master Edition</title>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+:root{--bg:#eef3f7;--card:#fff;--ink:#172a3a;--muted:#607080;--accent:#245b8f;--gold:#c89628;--good:#2e8b57;--bad:#b43d3d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Arial;color:var(--ink)}
+.wrap{max-width:1150px;margin:auto;padding:14px}.hero{background:linear-gradient(135deg,#173d60,#287a78);color:#fff;padding:20px;border-radius:18px;margin-bottom:14px}
+h1{margin:0;font-size:clamp(26px,5vw,42px)}h2{margin:0 0 12px}.sub{opacity:.9;margin:5px 0 0}
+.grid{display:grid;grid-template-columns:330px 1fr;gap:14px}.card{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 4px 16px #172a3a18;margin-bottom:14px}
+button,input,select,textarea{font:inherit;border-radius:10px;border:1px solid #cbd6df;padding:11px;width:100%}button{background:var(--accent);color:#fff;border:0;font-weight:700;cursor:pointer}button.secondary{background:#687786}button.gold{background:#a97812}button.danger{background:var(--bad)}
+button:disabled{opacity:.45;cursor:not-allowed}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}.tabs button{background:#dce6ee;color:#18324a}.tabs button.active{background:var(--accent);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{background:#f3f7fa;border-radius:11px;text-align:center;padding:9px}.stat b{font-size:23px;display:block}.stat small{color:var(--muted)}
+.envs,.builds,.events{display:grid;gap:8px}.choice{padding:11px;border:2px solid #d9e2e9;border-radius:11px;background:#fff;cursor:pointer}.choice.selected{border-color:var(--gold);background:#fff8e7}
+.build{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px;border:1px solid #e0e6ea;border-radius:10px}.build .info{flex:1}.build small{color:var(--muted);display:block}.build button{width:auto;padding:8px 12px}
+.pill{display:inline-block;padding:5px 9px;border-radius:99px;background:#e7eef4;font-size:12px;font-weight:700}.online{background:#def4e6;color:#17663a}.offline{background:#f8e0e0;color:#8d2d2d}
+.log{max-height:270px;overflow:auto;background:#101820;color:#e9f1f5;border-radius:10px;padding:10px;font-family:ui-monospace,monospace;font-size:12px}.log div{padding:5px 0;border-bottom:1px solid #ffffff14}
+.map{min-height:220px;border-radius:14px;padding:14px;background:linear-gradient(#bde5f0 0 28%,#9dce88 28% 100%);display:flex;flex-direction:column;align-items:center;justify-content:center}.map.coast{background:linear-gradient(90deg,#bde5f0 0 35%,#9dce88 35%)}.map.dry{background:#e4c987}.map.mountain{background:linear-gradient(#bde5f0 0 25%,#a5ca8d 25%)}.map.forest{background:#a9d0a1}.terrain{font-size:55px}.buildings{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}.building{background:#fff;padding:8px;border-radius:9px;box-shadow:0 2px 7px #0002;text-align:center;font-size:12px}.building b{font-size:25px;display:block}
+.notice{padding:11px;border-radius:10px;background:#edf5fb;border-left:4px solid var(--accent)}.eventbox{padding:15px;border-radius:12px;background:#fff6dc;border:2px solid #e4bd59}.eventbox h3{margin:0 0 5px}.score{font-size:34px;font-weight:800}.hidden{display:none!important}
+.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px;border-bottom:1px solid #e3e8ec;font-size:13px}th{background:#f3f6f8}
+.small{font-size:12px;color:var(--muted)}.tag{font-size:11px;background:#eef1f3;padding:3px 6px;border-radius:5px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.row3{grid-template-columns:1fr}.wrap{padding:9px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero"><h1>🏛️ Civilization: Game Master Edition</h1><p class="sub">Students build with 100 points. You create the crises. Can their civilization survive?</p></header>
+
+<div id="home" class="card">
+  <h2>Choose your role</h2>
+  <div class="row">
+    <button onclick="showTeacher()">👑 I am the Game Master</button>
+    <button onclick="showStudent()">🧑‍🤝‍🧑 I am a Student</button>
+  </div>
+  <p class="small">For online play, everyone should open the same hosted HTML page. The Game Master creates a room; students join using the room code. Internet is required for the live connection.</p>
+</div>
+
+<section id="teacher" class="hidden">
+<div class="grid">
+<aside>
+<div class="card">
+<h2>👑 Game Master</h2>
+<div id="roomStatus" class="notice">Creating room…</div>
+<p><b>Room Code</b></p><input id="roomCode" readonly value="—">
+<button onclick="copyRoom()">📋 Copy Room Code</button>
+<p class="small">Send this code to your students. They select Student → enter the code → join.</p>
+</div>
+<div class="card">
+<h2>⚠️ Inflict a Problem</h2>
+<div class="events" id="eventButtons"></div>
+<hr>
+<input id="customEvent" placeholder="Custom problem, e.g. 'A rival kingdom invades.'">
+<div class="row"><input id="customCost" type="number" value="15" min="0" placeholder="Penalty"><button class="danger" onclick="sendCustom()">Inflict Custom</button></div>
+<p class="small">Penalty is removed from the civilization's points. You can also make the penalty affect Food, Safety, or Eco using the advanced buttons below.</p>
+</div>
+</aside>
+<main>
+<div class="card">
+<h2>📊 Live Civilization Board</h2>
+<div id="teacherBoard" class="tablewrap"><p class="small">Waiting for students to join…</p></div>
+</div>
+<div class="card">
+<h2>📜 Game Log</h2><div id="teacherLog" class="log"></div>
+</div>
+</main>
+</div>
+</section>
+
+<section id="student" class="hidden">
+<div class="grid">
+<aside>
+<div class="card">
+<h2>🧑‍🤝‍🧑 Join Game</h2>
+<input id="studentName" placeholder="Civilization name">
+<input id="studentRoom" placeholder="Room code" style="margin-top:8px">
+<button onclick="joinRoom()" style="margin-top:8px">🚪 Join Room</button>
+<div id="studentStatus" class="notice" style="margin-top:10px">Not connected.</div>
+</div>
+<div id="builder" class="hidden">
+<div class="card">
+<h2>🌍 Choose Environment</h2>
+<div id="envChoices" class="envs"></div>
+</div>
+<div class="card">
+<h2>🏗️ Build Your Civilization</h2>
+<p class="small">You have <b>100 points</b>. Spend them on buildings. The environment changes bonuses and weaknesses.</p>
+<div class="stats"><div class="stat">🏛️<b id="sp">100</b><small>Points</small></div><div class="stat">🍚<b id="sf">0</b><small>Food</small></div><div class="stat">🛡️<b id="ss">0</b><small>Safety</small></div><div class="stat">🌱<b id="se">0</b><small>Eco</small></div></div>
+<div id="buildList" class="builds"></div>
+<button onclick="submitBuild()" class="gold" style="margin-top:10px">📨 Submit Civilization to Game Master</button>
+</div>
+</div>
+</aside>
+<main>
+<div class="card"><h2 id="studentTitle">🏛️ Your Civilization</h2>
+<div id="studentMap" class="map"><div class="terrain">🌎</div><p>Join a room to begin.</p></div></div>
+<div class="card"><h2>⚔️ Game Master Events</h2><div id="studentEvent" class="eventbox">No crisis yet.</div><div id="studentMessage" class="notice" style="margin-top:10px">Build wisely. Your choices must match your environment.</div></div>
+</main>
+</div>
+</section>
+</div>
+
+<script>
+const ENV={
+ plains:{name:"Fertile Plains",icon:"🌾",terrain:"🌾🏞️🌾",cls:"",bonus:"Farms +5 Food",weak:"Flooding can threaten farms.",good:["farm","water"]},
+ coast:{name:"Coastal Area",icon:"🏝️",terrain:"🌊🏝️🐟",cls:"coast",bonus:"Fishing/Port +5 Food",weak:"Storms threaten settlements.",good:["fish","port"]},
+ mountain:{name:"Mountain Area",icon:"⛰️",terrain:"⛰️🌲💧",cls:"mountain",bonus:"Water/Defense +5 Safety",weak:"Roads are difficult.",good:["water","defense"]},
+ dry:{name:"Dry Area",icon:"🏜️",terrain:"🏜️☀️🌵",cls:"dry",bonus:"Water +8 Eco",weak:"Drought reduces Food.",good:["water"]},
+ forest:{name:"Forest Area",icon:"🌳",terrain:"🌳🦌🌲",cls:"forest",bonus:"Nature Reserve +8 Eco",weak:"Overdevelopment hurts Eco.",good:["eco"]}
+};
+const BUILD=[
+{id:"house",n:"Homes",i:"🏠",c:10,f:0,s:3,e:1},{id:"farm",n:"Farm",i:"🌾",c:15,f:15,s:0,e:2},
+{id:"fish",n:"Fishing Village",i:"🎣",c:15,f:15,s:0,e:1},{id:"market",n:"Market",i:"🏪",c:15,f:3,s:0,e:0},
+{id:"school",n:"School",i:"🏫",c:15,f:0,s:2,e:2},{id:"hospital",n:"Hospital",i:"🏥",c:20,f:0,s:10,e:1},
+{id:"road",n:"Road",i:"🛣️",c:10,f:0,s:2,e:-1},{id:"defense",n:"Defense System",i:"🛡️",c:20,f:0,s:15,e:-1},
+{id:"water",n:"Water System",i:"💧",c:20,f:5,s:4,e:8},{id:"port",n:"Port",i:"⚓",c:20,f:5,s:1,e:0},
+{id:"wood",n:"Wood Workshop",i:"🪵",c:15,f:0,s:1,e:-2},{id:"eco",n:"Nature Reserve",i:"🌱",c:15,f:0,s:1,e:15}
+];
+const EVENTS=[
+{n:"🌧️ Great Flood",d:"A major flood hits the civilization.",p:20,a:"safety"},
+{n:"☀️ Drought",d:"A long drought threatens food and water.",p:20,a:"food"},
+{n:"⚔️ Invasion",d:"A rival civilization invades.",p:25,a:"safety"},
+{n:"🦠 Disease Outbreak",d:"A disease spreads among the population.",p:20,a:"safety"},
+{n:"🌲 Resource Depletion",d:"Natural resources are being exhausted.",p:20,a:"eco"},
+{n:"💰 Economic Crisis",d:"Trade collapses and markets suffer.",p:20,a:"points"},
+{n:"🌋 Natural Disaster",d:"A powerful natural disaster damages infrastructure.",p:30,a:"points"}
+];
+
+let peer,conn,role,students={},sid=null;
+let me={name:"",env:"plains",points:100,food:0,safety:0,eco:0,built:[],submitted:false,alive:true};
+
+function showTeacher(){role="teacher";home.classList.add("hidden");teacher.classList.remove("hidden");createRoom()}
+function showStudent(){role="student";home.classList.add("hidden");student.classList.remove("hidden");renderEnv();renderBuilds()}
+function createRoom(){
+ peer=new Peer("CIV-"+Math.random().toString(36).slice(2,7).toUpperCase());
+ peer.on("open",id=>{let code=id.replace("CIV-","");roomCode.value=code;roomStatus.innerHTML='<span class="pill online">● ROOM LIVE</span> Students can join with this code.'});
+ peer.on("connection",c=>{c.on("open",()=>{let id=c.peer;students[id]={id,name:"Joining…",points:100,food:0,safety:0,eco:0,env:"plains",built:[],submitted:false,alive:true,conn:c};c.on("data",data=>teacherReceive(id,data));c.on("close",()=>{if(students[id]){students[id].online=false;renderTeacher()}});c.send({type:"welcome",events:EVENTS});renderTeacher()})});
+ peer.on("error",e=>roomStatus.textContent="Connection error: "+e.type);
+}
+function teacherReceive(id,d){
+ if(!students[id])return;
+ if(d.type==="join"){students[id].name=d.name||"Unnamed Civilization";logT("🟢 "+students[id].name+" joined.");}
+ if(d.type==="state"){Object.assign(students[id],d.state);students[id].conn=students[id].conn||conn;}
+ if(d.type==="submitted"){Object.assign(students[id],d.state);students[id].submitted=true;logT("📨 "+students[id].name+" submitted a civilization.")}
+ renderTeacher();
+}
+function sendAll(msg){Object.values(students).forEach(s=>{try{s.conn.send(msg)}catch(e){}})}
+function inflict(ev){
+ let targets=Object.values(students);
+ if(!targets.length)return alert("No students have joined yet.");
+ targets.forEach(s=>applyEvent(s,ev));
+ renderTeacher(); logT("⚠️ "+ev.n+" inflicted on ALL civilizations: -"+ev.p+" "+ev.a);
+}
+function applyEvent(s,ev){
+ if(ev.a==="points")s.points=Math.max(0,s.points-ev.p);
+ if(ev.a==="food")s.food=Math.max(0,s.food-ev.p);
+ if(ev.a==="safety")s.safety=Math.max(0,s.safety-ev.p);
+ if(ev.a==="eco")s.eco=Math.max(0,s.eco-ev.p);
+ if(s.points<=0||s.food<0||s.safety<0||s.eco<0)s.alive=false;
+ try{s.conn.send({type:"event",event:ev,state:s})}catch(e){}
+}
+function sendCustom(){
+ let text=customEvent.value.trim();if(!text)return;
+ let p=Math.max(0,Number(customCost.value)||0);let ev={n:"👑 Game Master Crisis",d:text,p,a:"points"};inflict(ev);customEvent.value="";
+}
+function renderTeacher(){
+ let arr=Object.values(students);
+ if(!arr.length){teacherBoard.innerHTML="<p class='small'>Waiting for students to join…</p>";return}
+ teacherBoard.innerHTML="<table><tr><th>Civilization</th><th>Environment</th><th>Points</th><th>Food</th><th>Safety</th><th>Eco</th><th>Status</th></tr>"+
+ arr.map(s=>`<tr><td><b>${esc(s.name)}</b></td><td>${ENV[s.env]?.icon||""} ${ENV[s.env]?.name||s.env}</td><td>${s.points}</td><td>${s.food}</td><td>${s.safety}</td><td>${s.eco}</td><td>${s.alive===false?"💀 Fallen":s.submitted?"✅ Ready":"🟡 Building"}</td></tr>`).join("")+"</table>";
+}
+function logT(x){teacherLog.innerHTML="<div>"+new Date().toLocaleTimeString()+" — "+esc(x)+"</div>"+teacherLog.innerHTML}
+function copyRoom(){navigator.clipboard?.writeText(roomCode.value);alert("Room code copied: "+roomCode.value)}
+function renderEvents(){
+ eventButtons.innerHTML=EVENTS.map((e,i)=>`<button class="danger" onclick='inflict(EVENTS[${i}])'>${e.n}<br><small>- ${e.p} ${e.a}</small></button>`).join("")
+}
+renderEvents();
+
+function joinRoom(){
+ let name=studentName.value.trim()||"Unnamed Civilization",code=studentRoom.value.trim().toUpperCase();
+ if(!code)return alert("Enter the Game Master's room code.");
+ me.name=name;
+ peer=new Peer();
+ peer.on("open",()=>{conn=peer.connect("CIV-"+code,{reliable:true});conn.on("open",()=>{studentStatus.innerHTML='<span class="pill online">● CONNECTED</span> Building may begin.';builder.classList.remove("hidden");conn.send({type:"join",name:me.name});sendState()});conn.on("data",studentReceive);conn.on("close",()=>studentStatus.innerHTML='<span class="pill offline">● DISCONNECTED</span>');});
+ peer.on("error",e=>studentStatus.textContent="Could not connect: "+e.type+". Check the room code.");
+}
+function studentReceive(d){
+ if(d.type==="event"){me.points=d.state.points;me.food=d.state.food;me.safety=d.state.safety;me.eco=d.state.eco;me.alive=d.state.alive;studentEvent.innerHTML=`<h3>${esc(d.event.n)}</h3><p>${esc(d.event.d)}</p><b>Penalty: -${d.event.p} ${d.event.a}</b>`;studentMessage.textContent=me.alive?"Your civilization survived this crisis—for now. Adapt your strategy!":"💀 Your civilization has fallen. The Game Master may decide whether you get a recovery challenge.";renderStudent()}
+}
+function sendState(){if(conn?.open)conn.send({type:"state",state:cleanState()})}
+function cleanState(){return {name:me.name,env:me.env,points:me.points,food:me.food,safety:me.safety,eco:me.eco,built:me.built,submitted:me.submitted,alive:me.alive}}
+function renderEnv(){envChoices.innerHTML=Object.entries(ENV).map(([k,e])=>`<div class="choice ${me.env===k?"selected":""}" onclick="chooseEnv('${k}')"><b>${e.icon} ${e.name}</b><div class="small">${e.bonus} • Weakness: ${e.weak}</div></div>`).join("")}
+function chooseEnv(k){me.env=k;renderEnv();renderStudent();sendState()}
+function renderBuilds(){
+ buildList.innerHTML=BUILD.map(b=>`<div class="build"><div class="info"><b>${b.i} ${b.n}</b><small>${b.c} pts • +${b.f} Food • +${b.s} Safety • ${b.e>=0?"+":""}${b.e} Eco</small></div><button onclick="buy('${b.id}')" ${me.points<b.c?"disabled":""}>Build</button></div>`).join("")
+}
+function buy(id){
+ let b=BUILD.find(x=>x.id===id);if(me.points<b.c)return;
+ me.points-=b.c;me.food+=b.f;me.safety+=b.s;me.eco+=b.e;me.built.push(id);
+ if(ENV[me.env].good.includes(id)){me.food+=5;me.safety+=2;me.eco+=2}
+ if(me.env==="forest" && ["wood","road"].includes(id))me.eco-=3;
+ if(me.env==="dry" && id==="farm")me.food-=3;
+ renderBuilds();renderStudent();sendState()
+}
+function submitBuild(){if(!me.built.length)return alert("Build at least one structure first.");me.submitted=true;conn.send({type:"submitted",state:cleanState()});studentMessage.textContent="✅ Submitted! Wait for the Game Master to test your civilization.";renderStudent()}
+function renderStudent(){
+ sp.textContent=me.points;sf.textContent=me.food;ss.textContent=me.safety;se.textContent=me.eco;
+ studentTitle.textContent="🏛️ "+me.name;
+ let e=ENV[me.env];studentMap.className="map "+e.cls;studentMap.innerHTML=`<div class="terrain">${e.terrain}</div><div class="buildings">${me.built.map(id=>{let b=BUILD.find(x=>x.id===id);return `<div class="building"><b>${b.i}</b>${b.n}</div>`}).join("")}</div><p class="small">${e.bonus} • Weakness: ${e.weak}</p>`;
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+</script>
+</body>
+</html>
