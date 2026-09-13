@@ -2,216 +2,210 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Civilization: Game Master Edition</title>
-<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AR Kapaligiran Quest</title>
 <style>
-:root{--bg:#eef3f7;--card:#fff;--ink:#172a3a;--muted:#607080;--accent:#245b8f;--gold:#c89628;--good:#2e8b57;--bad:#b43d3d}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Arial;color:var(--ink)}
-.wrap{max-width:1150px;margin:auto;padding:14px}.hero{background:linear-gradient(135deg,#173d60,#287a78);color:#fff;padding:20px;border-radius:18px;margin-bottom:14px}
-h1{margin:0;font-size:clamp(26px,5vw,42px)}h2{margin:0 0 12px}.sub{opacity:.9;margin:5px 0 0}
-.grid{display:grid;grid-template-columns:330px 1fr;gap:14px}.card{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 4px 16px #172a3a18;margin-bottom:14px}
-button,input,select,textarea{font:inherit;border-radius:10px;border:1px solid #cbd6df;padding:11px;width:100%}button{background:var(--accent);color:#fff;border:0;font-weight:700;cursor:pointer}button.secondary{background:#687786}button.gold{background:#a97812}button.danger{background:var(--bad)}
-button:disabled{opacity:.45;cursor:not-allowed}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}.tabs button{background:#dce6ee;color:#18324a}.tabs button.active{background:var(--accent);color:#fff}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{background:#f3f7fa;border-radius:11px;text-align:center;padding:9px}.stat b{font-size:23px;display:block}.stat small{color:var(--muted)}
-.envs,.builds,.events{display:grid;gap:8px}.choice{padding:11px;border:2px solid #d9e2e9;border-radius:11px;background:#fff;cursor:pointer}.choice.selected{border-color:var(--gold);background:#fff8e7}
-.build{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px;border:1px solid #e0e6ea;border-radius:10px}.build .info{flex:1}.build small{color:var(--muted);display:block}.build button{width:auto;padding:8px 12px}
-.pill{display:inline-block;padding:5px 9px;border-radius:99px;background:#e7eef4;font-size:12px;font-weight:700}.online{background:#def4e6;color:#17663a}.offline{background:#f8e0e0;color:#8d2d2d}
-.log{max-height:270px;overflow:auto;background:#101820;color:#e9f1f5;border-radius:10px;padding:10px;font-family:ui-monospace,monospace;font-size:12px}.log div{padding:5px 0;border-bottom:1px solid #ffffff14}
-.map{min-height:220px;border-radius:14px;padding:14px;background:linear-gradient(#bde5f0 0 28%,#9dce88 28% 100%);display:flex;flex-direction:column;align-items:center;justify-content:center}.map.coast{background:linear-gradient(90deg,#bde5f0 0 35%,#9dce88 35%)}.map.dry{background:#e4c987}.map.mountain{background:linear-gradient(#bde5f0 0 25%,#a5ca8d 25%)}.map.forest{background:#a9d0a1}.terrain{font-size:55px}.buildings{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}.building{background:#fff;padding:8px;border-radius:9px;box-shadow:0 2px 7px #0002;text-align:center;font-size:12px}.building b{font-size:25px;display:block}
-.notice{padding:11px;border-radius:10px;background:#edf5fb;border-left:4px solid var(--accent)}.eventbox{padding:15px;border-radius:12px;background:#fff6dc;border:2px solid #e4bd59}.eventbox h3{margin:0 0 5px}.score{font-size:34px;font-weight:800}.hidden{display:none!important}
-.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px;border-bottom:1px solid #e3e8ec;font-size:13px}th{background:#f3f6f8}
-.small{font-size:12px;color:var(--muted)}.tag{font-size:11px;background:#eef1f3;padding:3px 6px;border-radius:5px}
-@media(max-width:800px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.row3{grid-template-columns:1fr}.wrap{padding:9px}}
+:root{--blue:#0b4778;--green:#2f7d54;--gold:#f5c84b;--cream:#f7fbf8;--red:#c94b4b}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#dff4ff,#f4fff0);color:#15354d}
+header{background:linear-gradient(135deg,#0b4778,#176b91);color:#fff;padding:20px;text-align:center}
+h1{margin:0;font-size:clamp(26px,5vw,44px)} header p{margin:7px 0 0;font-size:17px}
+.wrap{max-width:1050px;margin:auto;padding:18px}
+.card{background:#fff;border-radius:22px;padding:20px;margin:15px 0;box-shadow:0 8px 24px #1233  }
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{border:0;border-radius:13px;padding:12px 17px;font-weight:700;cursor:pointer;background:var(--blue);color:white}
+button.secondary{background:#e7f0f5;color:#164564} button.green{background:var(--green)}
+button.gold{background:var(--gold);color:#18354a}
+#cameraBox{position:relative;background:#111;border-radius:18px;overflow:hidden;max-width:720px;margin:auto}
+video{display:block;width:100%;height:auto;min-height:300px;object-fit:cover}
+.scanline{position:absolute;left:8%;right:8%;top:50%;height:3px;background:#ffe45c;box-shadow:0 0 12px #ffe45c;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.25}}
+#status{padding:12px;text-align:center;font-weight:700}
+.hidden{display:none!important}
+.scorebar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.badge{background:#e9f7ef;padding:9px 13px;border-radius:99px;font-weight:700}
+.arScene{min-height:420px;border-radius:22px;position:relative;overflow:hidden;color:#fff;padding:25px;display:flex;align-items:flex-end}
+.river{background:linear-gradient(#8fd8ff 0 38%,#65a86a 38% 58%,#287ab5 58% 100%)}
+.city{background:linear-gradient(#8bd8ff 0 43%,#6b7c86 43% 100%)}
+.forest{background:linear-gradient(#8bdcff 0 25%,#3d8b4d 25% 100%)}
+.marine{background:linear-gradient(#74d7ef 0 30%,#087aa1 30% 100%)}
+.sceneTitle{font-size:36px;font-weight:900;text-shadow:2px 3px 4px #000;max-width:650px}
+.sceneText{font-size:18px;line-height:1.45;background:#0008;padding:15px;border-radius:15px}
+.hotspot{position:absolute;border:2px solid #fff;background:#0b4778dd;padding:10px 13px;border-radius:50px;font-weight:700;animation:float 2s infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.h1{top:16%;left:10%}.h2{top:27%;right:8%}.h3{top:48%;left:12%}
+.choiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.choice{background:#f1f7fa;border:3px solid transparent;color:#173b52;text-align:left}
+.choice:hover{border-color:#2d82ad}.correct{border-color:#2f9b61!important;background:#e7faee!important}.wrong{border-color:#c94b4b!important;background:#fff0f0!important}
+.feedback{font-size:18px;font-weight:700;padding:12px;border-radius:13px;margin-top:12px}
+#progress{height:12px;background:#dce8ee;border-radius:20px;overflow:hidden;margin-top:10px}
+#progress div{height:100%;background:linear-gradient(90deg,#2f7d54,#f5c84b);width:0}
+.small{font-size:13px;color:#557}
 </style>
 </head>
 <body>
+<header>
+<h1>🌎 AR KAPALIGIRAN QUEST</h1>
+<p>Napahahalagahan ang interaksyon ng tao sa kaniyang kapaligiran</p>
+</header>
+
 <div class="wrap">
-<header class="hero"><h1>🏛️ Civilization: Game Master Edition</h1><p class="sub">Students build with 100 points. You create the crises. Can their civilization survive?</p></header>
-
-<div id="home" class="card">
-  <h2>Choose your role</h2>
-  <div class="row">
-    <button onclick="showTeacher()">👑 I am the Game Master</button>
-    <button onclick="showStudent()">🧑‍🤝‍🧑 I am a Student</button>
+<div class="card">
+  <div class="scorebar">
+    <span class="badge">⭐ Score: <span id="score">0</span></span>
+    <span class="badge">🏆 Level: <span id="level">1</span></span>
+    <span class="badge">🌱 Environments: <span id="found">0</span>/4</span>
   </div>
-  <p class="small">For online play, everyone should open the same hosted HTML page. The Game Master creates a room; students join using the room code. Internet is required for the live connection.</p>
+  <div id="progress"><div id="progressFill"></div></div>
 </div>
 
-<section id="teacher" class="hidden">
-<div class="grid">
-<aside>
-<div class="card">
-<h2>👑 Game Master</h2>
-<div id="roomStatus" class="notice">Creating room…</div>
-<p><b>Room Code</b></p><input id="roomCode" readonly value="—">
-<button onclick="copyRoom()">📋 Copy Room Code</button>
-<p class="small">Send this code to your students. They select Student → enter the code → join.</p>
+<section id="start" class="card">
+<h2>🎮 Mission: Discover the Kapaligiran!</h2>
+<p>Students work in pairs or groups. Scan an <b>Environment Card QR code</b> using the camera. The game reveals an AR-style environment and a challenge.</p>
+<ol>
+<li>Allow camera access.</li>
+<li>Point the camera at an Environment Card QR code.</li>
+<li>Explore the AR scene.</li>
+<li>Answer the challenge to earn points.</li>
+</ol>
+<div class="controls">
+<button onclick="startScanner()">📷 Start AR Scanner</button>
+<button class="secondary" onclick="demoMode()">▶ Try Demo Mode</button>
 </div>
-<div class="card">
-<h2>⚠️ Inflict a Problem</h2>
-<div class="events" id="eventButtons"></div>
-<hr>
-<input id="customEvent" placeholder="Custom problem, e.g. 'A rival kingdom invades.'">
-<div class="row"><input id="customCost" type="number" value="15" min="0" placeholder="Penalty"><button class="danger" onclick="sendCustom()">Inflict Custom</button></div>
-<p class="small">Penalty is removed from the civilization's points. You can also make the penalty affect Food, Safety, or Eco using the advanced buttons below.</p>
-</div>
-</aside>
-<main>
-<div class="card">
-<h2>📊 Live Civilization Board</h2>
-<div id="teacherBoard" class="tablewrap"><p class="small">Waiting for students to join…</p></div>
-</div>
-<div class="card">
-<h2>📜 Game Log</h2><div id="teacherLog" class="log"></div>
-</div>
-</main>
+<p class="small">Tip: Print the four cards included with this game, or display a card on another screen.</p>
+</section>
+
+<section id="scanner" class="card hidden">
+<h2>📷 Scan an Environment Card</h2>
+<div id="cameraBox"><video id="video" playsinline></video><div class="scanline"></div></div>
+<div id="status">Point the camera at a QR code…</div>
+<div class="controls">
+<button class="secondary" onclick="stopScanner()">Stop Camera</button>
+<button class="gold" onclick="manualCode()">Enter Code Manually</button>
 </div>
 </section>
 
-<section id="student" class="hidden">
-<div class="grid">
-<aside>
-<div class="card">
-<h2>🧑‍🤝‍🧑 Join Game</h2>
-<input id="studentName" placeholder="Civilization name">
-<input id="studentRoom" placeholder="Room code" style="margin-top:8px">
-<button onclick="joinRoom()" style="margin-top:8px">🚪 Join Room</button>
-<div id="studentStatus" class="notice" style="margin-top:10px">Not connected.</div>
+<section id="scene" class="card hidden">
+<h2>✨ AR Environment Unlocked!</h2>
+<div id="arScene" class="arScene">
+  <div class="hotspot h1" id="hot1">👀 Observe</div>
+  <div class="hotspot h2" id="hot2">👥 People</div>
+  <div class="hotspot h3" id="hot3">🌱 Resources</div>
+  <div>
+    <div class="sceneTitle" id="sceneTitle"></div>
+    <div class="sceneText" id="sceneText"></div>
+  </div>
 </div>
-<div id="builder" class="hidden">
-<div class="card">
-<h2>🌍 Choose Environment</h2>
-<div id="envChoices" class="envs"></div>
+<div class="controls" style="margin-top:14px">
+<button class="green" onclick="showChallenge()">🎯 Take the Challenge</button>
 </div>
-<div class="card">
-<h2>🏗️ Build Your Civilization</h2>
-<p class="small">You have <b>100 points</b>. Spend them on buildings. The environment changes bonuses and weaknesses.</p>
-<div class="stats"><div class="stat">🏛️<b id="sp">100</b><small>Points</small></div><div class="stat">🍚<b id="sf">0</b><small>Food</small></div><div class="stat">🛡️<b id="ss">0</b><small>Safety</small></div><div class="stat">🌱<b id="se">0</b><small>Eco</small></div></div>
-<div id="buildList" class="builds"></div>
-<button onclick="submitBuild()" class="gold" style="margin-top:10px">📨 Submit Civilization to Game Master</button>
+</section>
+
+<section id="challenge" class="card hidden">
+<h2>🎯 Kapaligiran Challenge</h2>
+<p id="question"></p>
+<div id="choices" class="choiceGrid"></div>
+<div id="feedback"></div>
+<div class="controls" style="margin-top:12px">
+<button id="nextBtn" class="gold hidden" onclick="nextEnvironment()">➡️ Continue Mission</button>
 </div>
+</section>
+
+<section id="finish" class="card hidden">
+<h2>🏆 Mission Complete!</h2>
+<p id="finalMessage"></p>
+<div class="card" style="background:#f8fcf5">
+<h3>🌱 Reflection</h3>
+<p><b>How does your environment affect people's lives, and how do people's actions affect the environment?</b></p>
+<p class="small">Teacher can use this as a short oral sharing or exit ticket.</p>
 </div>
-</aside>
-<main>
-<div class="card"><h2 id="studentTitle">🏛️ Your Civilization</h2>
-<div id="studentMap" class="map"><div class="terrain">🌎</div><p>Join a room to begin.</p></div></div>
-<div class="card"><h2>⚔️ Game Master Events</h2><div id="studentEvent" class="eventbox">No crisis yet.</div><div id="studentMessage" class="notice" style="margin-top:10px">Build wisely. Your choices must match your environment.</div></div>
-</main>
-</div>
+<button onclick="location.reload()">🔄 Play Again</button>
 </section>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
-const ENV={
- plains:{name:"Fertile Plains",icon:"🌾",terrain:"🌾🏞️🌾",cls:"",bonus:"Farms +5 Food",weak:"Flooding can threaten farms.",good:["farm","water"]},
- coast:{name:"Coastal Area",icon:"🏝️",terrain:"🌊🏝️🐟",cls:"coast",bonus:"Fishing/Port +5 Food",weak:"Storms threaten settlements.",good:["fish","port"]},
- mountain:{name:"Mountain Area",icon:"⛰️",terrain:"⛰️🌲💧",cls:"mountain",bonus:"Water/Defense +5 Safety",weak:"Roads are difficult.",good:["water","defense"]},
- dry:{name:"Dry Area",icon:"🏜️",terrain:"🏜️☀️🌵",cls:"dry",bonus:"Water +8 Eco",weak:"Drought reduces Food.",good:["water"]},
- forest:{name:"Forest Area",icon:"🌳",terrain:"🌳🦌🌲",cls:"forest",bonus:"Nature Reserve +8 Eco",weak:"Overdevelopment hurts Eco.",good:["eco"]}
+const DATA={
+ RIVER:{name:"RIVER / ILOG",class:"river",text:"People use rivers for water, fishing, transportation and livelihood. Clean rivers support communities; pollution harms both people and nature.",q:"A community's river is becoming polluted. Which action shows responsible interaction with the environment?",choices:["Throw more waste because the river carries it away.","Organize clean-up activities and reduce waste entering the river.","Ignore the problem because the river is natural.","Use more plastic near the river."],answer:1},
+ CITY:{name:"URBAN / LUNGSOD",class:"city",text:"People build homes, roads, businesses and schools in cities. Urban life depends on planning, clean spaces, safe transport and responsible use of resources.",q:"Which action helps people and the urban environment live in balance?",choices:["Plant trees and use proper waste segregation.","Block drainage with garbage.","Burn waste beside houses.","Use public spaces as dumping areas."],answer:0},
+ FOREST:{name:"FOREST / KAGUBATAN",class:"forest",text:"Forests provide wood, food, biodiversity, water protection and other resources. People benefit from forests, so sustainable use and protection are important.",q:"People need forest resources. What is the most sustainable response?",choices:["Cut every tree in one area.","Take resources without limits.","Use resources responsibly and protect/replant forests.","Burn the forest to clear land quickly."],answer:2},
+ MARINE:{name:"MARINE / DAGAT",class:"marine",text:"People depend on seas and coasts for food, transportation, livelihood and recreation. Healthy marine ecosystems support both communities and wildlife.",q:"A fishing community wants its livelihood to continue for future generations. What should it do?",choices:["Catch every fish possible.","Protect breeding areas and follow sustainable fishing practices.","Dump waste into the sea.","Destroy coral habitats."],answer:1}
 };
-const BUILD=[
-{id:"house",n:"Homes",i:"🏠",c:10,f:0,s:3,e:1},{id:"farm",n:"Farm",i:"🌾",c:15,f:15,s:0,e:2},
-{id:"fish",n:"Fishing Village",i:"🎣",c:15,f:15,s:0,e:1},{id:"market",n:"Market",i:"🏪",c:15,f:3,s:0,e:0},
-{id:"school",n:"School",i:"🏫",c:15,f:0,s:2,e:2},{id:"hospital",n:"Hospital",i:"🏥",c:20,f:0,s:10,e:1},
-{id:"road",n:"Road",i:"🛣️",c:10,f:0,s:2,e:-1},{id:"defense",n:"Defense System",i:"🛡️",c:20,f:0,s:15,e:-1},
-{id:"water",n:"Water System",i:"💧",c:20,f:5,s:4,e:8},{id:"port",n:"Port",i:"⚓",c:20,f:5,s:1,e:0},
-{id:"wood",n:"Wood Workshop",i:"🪵",c:15,f:0,s:1,e:-2},{id:"eco",n:"Nature Reserve",i:"🌱",c:15,f:0,s:1,e:15}
-];
-const EVENTS=[
-{n:"🌧️ Great Flood",d:"A major flood hits the civilization.",p:20,a:"safety"},
-{n:"☀️ Drought",d:"A long drought threatens food and water.",p:20,a:"food"},
-{n:"⚔️ Invasion",d:"A rival civilization invades.",p:25,a:"safety"},
-{n:"🦠 Disease Outbreak",d:"A disease spreads among the population.",p:20,a:"safety"},
-{n:"🌲 Resource Depletion",d:"Natural resources are being exhausted.",p:20,a:"eco"},
-{n:"💰 Economic Crisis",d:"Trade collapses and markets suffer.",p:20,a:"points"},
-{n:"🌋 Natural Disaster",d:"A powerful natural disaster damages infrastructure.",p:30,a:"points"}
-];
+let score=0,found=new Set(),current=null,stream=null,scanning=false,answered=false;
 
-let peer,conn,role,students={},sid=null;
-let me={name:"",env:"plains",points:100,food:0,safety:0,eco:0,built:[],submitted:false,alive:true};
-
-function showTeacher(){role="teacher";home.classList.add("hidden");teacher.classList.remove("hidden");createRoom()}
-function showStudent(){role="student";home.classList.add("hidden");student.classList.remove("hidden");renderEnv();renderBuilds()}
-function createRoom(){
- peer=new Peer("CIV-"+Math.random().toString(36).slice(2,7).toUpperCase());
- peer.on("open",id=>{let code=id.replace("CIV-","");roomCode.value=code;roomStatus.innerHTML='<span class="pill online">● ROOM LIVE</span> Students can join with this code.'});
- peer.on("connection",c=>{c.on("open",()=>{let id=c.peer;students[id]={id,name:"Joining…",points:100,food:0,safety:0,eco:0,env:"plains",built:[],submitted:false,alive:true,conn:c};c.on("data",data=>teacherReceive(id,data));c.on("close",()=>{if(students[id]){students[id].online=false;renderTeacher()}});c.send({type:"welcome",events:EVENTS});renderTeacher()})});
- peer.on("error",e=>roomStatus.textContent="Connection error: "+e.type);
+function startScanner(){
+ document.getElementById('start').classList.add('hidden');
+ document.getElementById('scanner').classList.remove('hidden');
+ const video=document.getElementById('video');
+ navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}}}).then(s=>{
+   stream=s; video.srcObject=s; video.play(); scanning=true; requestAnimationFrame(scan);
+ }).catch(()=>{document.getElementById('status').textContent="Camera unavailable. Use Demo Mode or Enter Code Manually.";});
 }
-function teacherReceive(id,d){
- if(!students[id])return;
- if(d.type==="join"){students[id].name=d.name||"Unnamed Civilization";logT("🟢 "+students[id].name+" joined.");}
- if(d.type==="state"){Object.assign(students[id],d.state);students[id].conn=students[id].conn||conn;}
- if(d.type==="submitted"){Object.assign(students[id],d.state);students[id].submitted=true;logT("📨 "+students[id].name+" submitted a civilization.")}
- renderTeacher();
+function stopScanner(){scanning=false;if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;}
+function scan(){
+ if(!scanning)return;
+ const v=document.getElementById('video');
+ if(v.readyState>=2){
+  const c=document.createElement('canvas'),x=c.getContext('2d');
+  c.width=v.videoWidth;c.height=v.videoHeight;x.drawImage(v,0,0,c.width,c.height);
+  const img=x.getImageData(0,0,c.width,c.height),code=jsQR(img.data,img.width,img.height);
+  if(code){handleCode(code.data);return;}
+ }
+ requestAnimationFrame(scan);
 }
-function sendAll(msg){Object.values(students).forEach(s=>{try{s.conn.send(msg)}catch(e){}})}
-function inflict(ev){
- let targets=Object.values(students);
- if(!targets.length)return alert("No students have joined yet.");
- targets.forEach(s=>applyEvent(s,ev));
- renderTeacher(); logT("⚠️ "+ev.n+" inflicted on ALL civilizations: -"+ev.p+" "+ev.a);
+function manualCode(){
+ const code=prompt("Enter card code: RIVER, CITY, FOREST, or MARINE");
+ if(code)handleCode(code.trim().toUpperCase());
 }
-function applyEvent(s,ev){
- if(ev.a==="points")s.points=Math.max(0,s.points-ev.p);
- if(ev.a==="food")s.food=Math.max(0,s.food-ev.p);
- if(ev.a==="safety")s.safety=Math.max(0,s.safety-ev.p);
- if(ev.a==="eco")s.eco=Math.max(0,s.eco-ev.p);
- if(s.points<=0||s.food<0||s.safety<0||s.eco<0)s.alive=false;
- try{s.conn.send({type:"event",event:ev,state:s})}catch(e){}
+function demoMode(){
+ document.getElementById('start').classList.add('hidden');
+ document.getElementById('scanner').classList.remove('hidden');
+ document.getElementById('status').innerHTML="Demo Mode: choose an environment.";
+ const box=document.getElementById('cameraBox');box.innerHTML='<div style="padding:55px;text-align:center;color:white;font-size:28px">📱 AR Scanner Demo</div>';
+ const b=document.createElement('div');b.className='choiceGrid';b.style.marginTop='15px';
+ Object.keys(DATA).forEach(k=>{let x=document.createElement('button');x.className='choice';x.textContent=DATA[k].name;x.onclick=()=>handleCode(k);b.appendChild(x)});
+ document.getElementById('scanner').appendChild(b);
 }
-function sendCustom(){
- let text=customEvent.value.trim();if(!text)return;
- let p=Math.max(0,Number(customCost.value)||0);let ev={n:"👑 Game Master Crisis",d:text,p,a:"points"};inflict(ev);customEvent.value="";
+function handleCode(code){
+ const key=code.includes(':')?code.split(':').pop().toUpperCase():code.toUpperCase();
+ if(!DATA[key]){document.getElementById('status').textContent="Unknown card. Try RIVER, CITY, FOREST, or MARINE.";return;}
+ stopScanner(); current=key; found.add(key); renderScene(); 
 }
-function renderTeacher(){
- let arr=Object.values(students);
- if(!arr.length){teacherBoard.innerHTML="<p class='small'>Waiting for students to join…</p>";return}
- teacherBoard.innerHTML="<table><tr><th>Civilization</th><th>Environment</th><th>Points</th><th>Food</th><th>Safety</th><th>Eco</th><th>Status</th></tr>"+
- arr.map(s=>`<tr><td><b>${esc(s.name)}</b></td><td>${ENV[s.env]?.icon||""} ${ENV[s.env]?.name||s.env}</td><td>${s.points}</td><td>${s.food}</td><td>${s.safety}</td><td>${s.eco}</td><td>${s.alive===false?"💀 Fallen":s.submitted?"✅ Ready":"🟡 Building"}</td></tr>`).join("")+"</table>";
+function renderScene(){
+ const d=DATA[current];
+ document.getElementById('scanner').classList.add('hidden');
+ document.getElementById('scene').classList.remove('hidden');
+ const s=document.getElementById('arScene');s.className='arScene '+d.class;
+ document.getElementById('sceneTitle').textContent=d.name;
+ document.getElementById('sceneText').textContent=d.text;
+ document.getElementById('hot1').textContent="👀 Observe "+d.name;
+ document.getElementById('hot2').textContent="👥 People";
+ document.getElementById('hot3').textContent="🌱 Resources";
+ document.getElementById('found').textContent=found.size;
+ document.getElementById('progressFill').style.width=(found.size/4*100)+'%';
 }
-function logT(x){teacherLog.innerHTML="<div>"+new Date().toLocaleTimeString()+" — "+esc(x)+"</div>"+teacherLog.innerHTML}
-function copyRoom(){navigator.clipboard?.writeText(roomCode.value);alert("Room code copied: "+roomCode.value)}
-function renderEvents(){
- eventButtons.innerHTML=EVENTS.map((e,i)=>`<button class="danger" onclick='inflict(EVENTS[${i}])'>${e.n}<br><small>- ${e.p} ${e.a}</small></button>`).join("")
+function showChallenge(){
+ const d=DATA[current];answered=false;
+ document.getElementById('scene').classList.add('hidden');document.getElementById('challenge').classList.remove('hidden');
+ document.getElementById('question').textContent=d.q;
+ const c=document.getElementById('choices');c.innerHTML='';
+ d.choices.forEach((t,i)=>{let b=document.createElement('button');b.className='choice';b.textContent=t;b.onclick=()=>answer(i,b);c.appendChild(b)});
+ document.getElementById('feedback').innerHTML='';document.getElementById('nextBtn').classList.add('hidden');
 }
-renderEvents();
-
-function joinRoom(){
- let name=studentName.value.trim()||"Unnamed Civilization",code=studentRoom.value.trim().toUpperCase();
- if(!code)return alert("Enter the Game Master's room code.");
- me.name=name;
- peer=new Peer();
- peer.on("open",()=>{conn=peer.connect("CIV-"+code,{reliable:true});conn.on("open",()=>{studentStatus.innerHTML='<span class="pill online">● CONNECTED</span> Building may begin.';builder.classList.remove("hidden");conn.send({type:"join",name:me.name});sendState()});conn.on("data",studentReceive);conn.on("close",()=>studentStatus.innerHTML='<span class="pill offline">● DISCONNECTED</span>');});
- peer.on("error",e=>studentStatus.textContent="Could not connect: "+e.type+". Check the room code.");
+function answer(i,btn){
+ if(answered)return;answered=true;
+ const d=DATA[current];const all=[...document.querySelectorAll('.choice')];
+ all.forEach(x=>x.disabled=true);
+ if(i===d.answer){score+=10;btn.classList.add('correct');document.getElementById('feedback').className='feedback correct';document.getElementById('feedback').textContent="✅ Correct! +10 points. You showed responsible interaction with the environment."}
+ else{score=Math.max(0,score-3);btn.classList.add('wrong');all[d.answer].classList.add('correct');document.getElementById('feedback').className='feedback wrong';document.getElementById('feedback').textContent="❌ Not quite. −3 points. Think about how people and the environment affect each other."}
+ document.getElementById('score').textContent=score;document.getElementById('level').textContent=Math.min(4,1+Math.floor(found.size/2));document.getElementById('nextBtn').classList.remove('hidden');
 }
-function studentReceive(d){
- if(d.type==="event"){me.points=d.state.points;me.food=d.state.food;me.safety=d.state.safety;me.eco=d.state.eco;me.alive=d.state.alive;studentEvent.innerHTML=`<h3>${esc(d.event.n)}</h3><p>${esc(d.event.d)}</p><b>Penalty: -${d.event.p} ${d.event.a}</b>`;studentMessage.textContent=me.alive?"Your civilization survived this crisis—for now. Adapt your strategy!":"💀 Your civilization has fallen. The Game Master may decide whether you get a recovery challenge.";renderStudent()}
+function nextEnvironment(){
+ if(found.size===4){document.getElementById('challenge').classList.add('hidden');document.getElementById('finish').classList.remove('hidden');document.getElementById('finalMessage').textContent=`You explored all four environments and earned ${score} points! ${score>=32?"Excellent! You understand the connection between people and their environment.":"Good job! Discuss which human actions can make each environment healthier."}`;return;}
+ document.getElementById('challenge').classList.add('hidden');document.getElementById('scanner').classList.remove('hidden');
+ document.getElementById('cameraBox').innerHTML='<video id="video" playsinline></video><div class="scanline"></div>';
+ document.getElementById('status').textContent="Scan the next Environment Card…";
+ startScanner();
 }
-function sendState(){if(conn?.open)conn.send({type:"state",state:cleanState()})}
-function cleanState(){return {name:me.name,env:me.env,points:me.points,food:me.food,safety:me.safety,eco:me.eco,built:me.built,submitted:me.submitted,alive:me.alive}}
-function renderEnv(){envChoices.innerHTML=Object.entries(ENV).map(([k,e])=>`<div class="choice ${me.env===k?"selected":""}" onclick="chooseEnv('${k}')"><b>${e.icon} ${e.name}</b><div class="small">${e.bonus} • Weakness: ${e.weak}</div></div>`).join("")}
-function chooseEnv(k){me.env=k;renderEnv();renderStudent();sendState()}
-function renderBuilds(){
- buildList.innerHTML=BUILD.map(b=>`<div class="build"><div class="info"><b>${b.i} ${b.n}</b><small>${b.c} pts • +${b.f} Food • +${b.s} Safety • ${b.e>=0?"+":""}${b.e} Eco</small></div><button onclick="buy('${b.id}')" ${me.points<b.c?"disabled":""}>Build</button></div>`).join("")
-}
-function buy(id){
- let b=BUILD.find(x=>x.id===id);if(me.points<b.c)return;
- me.points-=b.c;me.food+=b.f;me.safety+=b.s;me.eco+=b.e;me.built.push(id);
- if(ENV[me.env].good.includes(id)){me.food+=5;me.safety+=2;me.eco+=2}
- if(me.env==="forest" && ["wood","road"].includes(id))me.eco-=3;
- if(me.env==="dry" && id==="farm")me.food-=3;
- renderBuilds();renderStudent();sendState()
-}
-function submitBuild(){if(!me.built.length)return alert("Build at least one structure first.");me.submitted=true;conn.send({type:"submitted",state:cleanState()});studentMessage.textContent="✅ Submitted! Wait for the Game Master to test your civilization.";renderStudent()}
-function renderStudent(){
- sp.textContent=me.points;sf.textContent=me.food;ss.textContent=me.safety;se.textContent=me.eco;
- studentTitle.textContent="🏛️ "+me.name;
- let e=ENV[me.env];studentMap.className="map "+e.cls;studentMap.innerHTML=`<div class="terrain">${e.terrain}</div><div class="buildings">${me.built.map(id=>{let b=BUILD.find(x=>x.id===id);return `<div class="building"><b>${b.i}</b>${b.n}</div>`}).join("")}</div><p class="small">${e.bonus} • Weakness: ${e.weak}</p>`;
-}
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 </script>
 </body>
 </html>
