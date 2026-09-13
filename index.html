@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AR Kapaligiran Quest V3</title>
+<title>AR Kapaligiran Quest — V6</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#e7f7ff,#effbea);color:#17394e}
@@ -54,6 +54,14 @@ button.green{background:#2e8254} button.gold{background:#efc044;color:#17394e}
  .arLabel{font-size:12px;padding:8px}
 }
 </style>
+
+<meta name="theme-color" content="#064b78">
+<meta name="description" content="AR Kapaligiran Quest — scan QR codes and explore environments in your phone browser.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta http-equiv="Permissions-Policy" content="camera=(self)">
+
 </head>
 <body>
 <header>
@@ -77,6 +85,7 @@ button.green{background:#2e8254} button.gold{background:#efc044;color:#17394e}
   <div id="scanStatus" class="center">Starting camera…</div>
   <div class="center" style="margin-top:10px">
     <button onclick="startScanner()">📷 Start / Restart Scanner</button>
+    
   </div>
   <p class="small center">After a valid QR code is recognized, only that environment’s 3D AR and mission will appear. Scan all six cards to finish the quest.</p>
 </section>
@@ -171,15 +180,71 @@ let current=null,stream=null,scanning=false,scene,cam3d,renderer,objects=[],answ
 function setStatus(t){document.getElementById("scanStatus").textContent=t}
 async function startScanner(){
  stopScanner();
- try{
-  stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}});
-  const v=document.getElementById("video");v.srcObject=stream;await v.play();
-  scanning=true;setStatus(`🔎 Scanning… ${scanned.size}/${TOTAL_ENVIRONMENTS} environments discovered. Point at a QR Environment Card.`);requestAnimationFrame(scanQR);
- }catch(e){
-  setStatus("⚠️ Camera unavailable. Allow camera access and use HTTPS, or open this game in a browser that supports camera access.");
+ const secure = window.isSecureContext || location.hostname === "localhost" || location.hostname === "127.0.0.1";
+ if(!secure){
+   setStatus("🔒 Camera blocked: this HTML must be opened from HTTPS (or localhost). A downloaded file opened directly from Files/Downloads cannot use the camera in many phones.");
+   showCameraHelp();
+   return;
  }
+ if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+   setStatus("⚠️ This browser does not provide camera access. Please use the latest Chrome or Safari.");
+   showCameraHelp();
+   return;
+ }
+ try{
+  stream=await navigator.mediaDevices.getUserMedia({
+    video:{facingMode:{exact:"environment"},width:{ideal:1280},height:{ideal:720}},
+    audio:false
+  });
+ }catch(e1){
+  try{
+   stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});
+  }catch(e2){
+   setStatus("⚠️ Camera permission was denied or unavailable. Check browser camera permission, then press Start Scanner again.");
+   showCameraHelp();
+   return;
+  }
+ }
+ const v=document.getElementById("video");
+ v.srcObject=stream;
+ v.setAttribute("playsinline","");
+ v.muted=true;
+ try{await v.play();}catch(e){}
+ scanning=true;
+ setStatus(`🔎 Scanning… ${scanned.size}/${TOTAL_ENVIRONMENTS} environments discovered. Point at a QR Environment Card.`);
+ requestAnimationFrame(scanQR);
+}
+function showCameraHelp(){
+ let h=document.getElementById("cameraHelp");
+ if(!h){
+  h=document.createElement("div");h.id="cameraHelp";
+  h.style.cssText="margin-top:12px;padding:14px;border-radius:14px;background:#fff7d8;color:#5a4300;text-align:left;line-height:1.5";
+  document.getElementById("scannerCard").appendChild(h);
+ }
+ h.innerHTML="<b>📱 Camera setup:</b><br>1. Open this game from an <b>HTTPS web link</b>, not directly from your phone's Downloads/Files app.<br>2. Use Chrome on Android or Safari/Chrome on iPhone.<br>3. Tap <b>Allow Camera</b> when asked.<br>4. If permission was previously blocked, enable Camera permission for your browser in phone Settings, then reload the page.<br><br><b>Teacher tip:</b> Upload this HTML to a simple HTTPS web host before giving the game link to students.";
 }
 function stopScanner(){scanning=false;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
+async function cameraTest(){
+ stopScanner();
+ if(!window.isSecureContext && !["localhost","127.0.0.1"].includes(location.hostname)){
+   showCameraHelp();
+   setStatus("🔒 Camera test failed: secure HTTPS connection required.");
+   return;
+ }
+ if(!navigator.mediaDevices?.getUserMedia){
+   showCameraHelp();
+   setStatus("⚠️ Camera API unavailable in this browser.");
+   return;
+ }
+ try{
+  const s=await navigator.mediaDevices.getUserMedia({video:true,audio:false});
+  s.getTracks().forEach(t=>t.stop());
+  setStatus("✅ Camera permission works. Press Start / Restart Scanner to begin scanning.");
+ }catch(e){
+  setStatus("❌ Camera permission test failed. Check your browser's camera permission.");
+  showCameraHelp();
+ }
+}
 function scanQR(){
  if(!scanning)return;
  const v=document.getElementById("video");
@@ -187,7 +252,7 @@ function scanQR(){
   const c=document.createElement("canvas"),x=c.getContext("2d");
   c.width=v.videoWidth;c.height=v.videoHeight;x.drawImage(v,0,0,c.width,c.height);
   const img=x.getImageData(0,0,c.width,c.height);
-  const qr=jsQR(img.data,img.width,img.height,{inversionAttempts:"dontInvert"});
+  const qr=jsQR(img.data,img.width,img.height,{inversionAttempts:"attemptBoth"});
   if(qr){
    const key=qr.data.trim().toUpperCase().replace(/^.*[:#\/]/,"");
    if(ENV[key]){openEnvironment(key);return}
@@ -252,7 +317,7 @@ function restartScan(){
  document.getElementById("missionCard").style.display="none";
  document.getElementById("complete").style.display="none";
  document.getElementById("scannerCard").classList.remove("hidden");
- setStatus("Starting camera…");startScanner();
+ setStatus("Preparing camera…");startScanner();
 }
 
 /* ---------- 3D AR WORLD ---------- */
@@ -354,5 +419,29 @@ selectEnvForStart=null;
 async function boot(){await startScanner()}
 boot();
 </script>
+
+<script>
+(function(){
+  function showDeploymentHint(){
+    const secure = window.isSecureContext;
+    const local = location.protocol === "file:";
+    const host = location.hostname;
+    if (local || !secure) {
+      const box = document.createElement("div");
+      box.id = "httpsWarning";
+      box.style.cssText =
+        "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;" +
+        "background:#fff3cd;color:#664d03;border:1px solid #ffecb5;" +
+        "border-radius:12px;padding:12px 14px;font:600 14px/1.4 system-ui,sans-serif;" +
+        "box-shadow:0 6px 20px rgba(0,0,0,.18)";
+      box.innerHTML = "⚠️ Camera access needs HTTPS. Open the published GitHub Pages/Netlify link in Chrome or Safari — do not open the downloaded HTML file directly.";
+      document.body.appendChild(box);
+    }
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", showDeploymentHint);
+  else showDeploymentHint();
+})();
+</script>
+
 </body>
 </html>
