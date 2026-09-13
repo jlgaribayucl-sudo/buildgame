@@ -1,45 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AR Kapaligiran Quest</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AR Kapaligiran Quest V3</title>
 <style>
-:root{--blue:#0b4778;--green:#2f7d54;--gold:#f5c84b;--cream:#f7fbf8;--red:#c94b4b}
-*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#dff4ff,#f4fff0);color:#15354d}
-header{background:linear-gradient(135deg,#0b4778,#176b91);color:#fff;padding:20px;text-align:center}
-h1{margin:0;font-size:clamp(26px,5vw,44px)} header p{margin:7px 0 0;font-size:17px}
-.wrap{max-width:1050px;margin:auto;padding:18px}
-.card{background:#fff;border-radius:22px;padding:20px;margin:15px 0;box-shadow:0 8px 24px #1233  }
-.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-button{border:0;border-radius:13px;padding:12px 17px;font-weight:700;cursor:pointer;background:var(--blue);color:white}
-button.secondary{background:#e7f0f5;color:#164564} button.green{background:var(--green)}
-button.gold{background:var(--gold);color:#18354a}
-#cameraBox{position:relative;background:#111;border-radius:18px;overflow:hidden;max-width:720px;margin:auto}
-video{display:block;width:100%;height:auto;min-height:300px;object-fit:cover}
-.scanline{position:absolute;left:8%;right:8%;top:50%;height:3px;background:#ffe45c;box-shadow:0 0 12px #ffe45c;animation:pulse 1.4s infinite}
-@keyframes pulse{50%{opacity:.25}}
-#status{padding:12px;text-align:center;font-weight:700}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#e7f7ff,#effbea);color:#17394e}
+header{background:linear-gradient(135deg,#064b78,#167d70);color:#fff;padding:20px;text-align:center}
+h1{margin:0;font-size:clamp(25px,5vw,43px)} header p{margin:7px 0 0;font-size:17px}
+.wrap{max-width:1050px;margin:auto;padding:16px}
+.card{background:#fff;border-radius:24px;padding:20px;margin:15px 0;box-shadow:0 10px 30px #123c5018}
+.center{text-align:center}
 .hidden{display:none!important}
-.scorebar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.badge{background:#e9f7ef;padding:9px 13px;border-radius:99px;font-weight:700}
-.arScene{min-height:420px;border-radius:22px;position:relative;overflow:hidden;color:#fff;padding:25px;display:flex;align-items:flex-end}
-.river{background:linear-gradient(#8fd8ff 0 38%,#65a86a 38% 58%,#287ab5 58% 100%)}
-.city{background:linear-gradient(#8bd8ff 0 43%,#6b7c86 43% 100%)}
-.forest{background:linear-gradient(#8bdcff 0 25%,#3d8b4d 25% 100%)}
-.marine{background:linear-gradient(#74d7ef 0 30%,#087aa1 30% 100%)}
-.sceneTitle{font-size:36px;font-weight:900;text-shadow:2px 3px 4px #000;max-width:650px}
-.sceneText{font-size:18px;line-height:1.45;background:#0008;padding:15px;border-radius:15px}
-.hotspot{position:absolute;border:2px solid #fff;background:#0b4778dd;padding:10px 13px;border-radius:50px;font-weight:700;animation:float 2s infinite}
-@keyframes float{50%{transform:translateY(-8px)}}
-.h1{top:16%;left:10%}.h2{top:27%;right:8%}.h3{top:48%;left:12%}
-.choiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
-.choice{background:#f1f7fa;border:3px solid transparent;color:#173b52;text-align:left}
-.choice:hover{border-color:#2d82ad}.correct{border-color:#2f9b61!important;background:#e7faee!important}.wrong{border-color:#c94b4b!important;background:#fff0f0!important}
-.feedback{font-size:18px;font-weight:700;padding:12px;border-radius:13px;margin-top:12px}
-#progress{height:12px;background:#dce8ee;border-radius:20px;overflow:hidden;margin-top:10px}
-#progress div{height:100%;background:linear-gradient(90deg,#2f7d54,#f5c84b);width:0}
-.small{font-size:13px;color:#557}
+button{border:0;border-radius:14px;padding:12px 18px;background:#09527e;color:white;font-weight:800;cursor:pointer}
+button.green{background:#2e8254} button.gold{background:#efc044;color:#17394e}
+#scannerCard{max-width:850px;margin:25px auto}
+#cameraBox{position:relative;background:#071017;border-radius:22px;overflow:hidden;min-height:480px}
+#video{width:100%;height:100%;min-height:480px;object-fit:cover;display:block}
+.scanFrame{position:absolute;left:12%;right:12%;top:19%;bottom:19%;border:3px solid #fff;border-radius:22px;box-shadow:0 0 0 9999px #0005}
+.scanFrame:after{content:"";position:absolute;left:8%;right:8%;top:50%;height:3px;background:#ffe04b;box-shadow:0 0 15px #ffe04b;animation:scan 1.5s infinite}
+@keyframes scan{50%{transform:translateY(90px);opacity:.3}}
+#scanStatus{background:#082c45;color:#fff;padding:13px;border-radius:14px;margin-top:12px;font-weight:800}
+#arCard{display:none}
+#arStage{position:relative;min-height:610px;border-radius:22px;overflow:hidden;background:#12212a}
+#camAR{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#world{position:absolute;inset:0;width:100%;height:100%}
+.arLabel{position:absolute;z-index:4;top:14px;left:14px;right:14px;text-align:center;background:#001d2dcc;color:#fff;border-radius:99px;padding:11px;font-weight:900}
+.info{position:absolute;z-index:4;left:15px;right:15px;bottom:15px;background:#001d2dcc;color:white;border-radius:18px;padding:16px}
+.info h2{margin:0 0 6px;font-size:30px}.info p{margin:4px 0;line-height:1.45}
+.hotspot{position:absolute;z-index:4;background:#fff;color:#064b78;padding:9px 12px;border-radius:99px;font-weight:900;box-shadow:0 5px 15px #0004;animation:float 2.2s infinite}
+.a{top:22%;left:7%}.b{top:31%;right:7%}.c{top:43%;left:8%}
+@keyframes float{50%{transform:translateY(-9px)}}
+#missionCard{display:none}
+.missionBox{background:#f4fbf6;border-left:6px solid #2e8254;border-radius:16px;padding:17px;font-size:18px}
+.choice{display:block;width:100%;text-align:left;margin:8px 0;background:#f1f7f8;color:#17394e}
+.choice.correct{background:#dcf7e5;outline:3px solid #2e8254}
+.choice.wrong{background:#ffe2e2;outline:3px solid #c74c4c}
+#feedback{font-weight:800;margin-top:12px;padding:12px;border-radius:12px}
+.success{background:#e4f8eb}.error{background:#ffeaea}
+.badge{display:inline-block;background:#edf7f3;padding:8px 12px;border-radius:99px;font-weight:800;margin:3px}
+.small{font-size:12px;color:#5b7180}
+#complete{display:none}
+@media(max-width:700px){#cameraBox,#video{min-height:430px}#arStage{min-height:540px}.info h2{font-size:24px}}
 </style>
 </head>
 <body>
@@ -49,163 +52,270 @@ video{display:block;width:100%;height:auto;min-height:300px;object-fit:cover}
 </header>
 
 <div class="wrap">
-<div class="card">
-  <div class="scorebar">
-    <span class="badge">⭐ Score: <span id="score">0</span></span>
-    <span class="badge">🏆 Level: <span id="level">1</span></span>
-    <span class="badge">🌱 Environments: <span id="found">0</span>/4</span>
+
+<!-- STUDENT VIEW: NOTHING IS REVEALED UNTIL A QR CODE IS SCANNED -->
+<section id="scannerCard" class="card">
+  <div class="center">
+    <span class="badge">📱 STUDENT AR SCANNER</span>
+    <h2>Scan the Kapaligiran QR Code</h2>
+    <p>Point your phone camera at the QR card provided by your teacher.</p>
   </div>
-  <div id="progress"><div id="progressFill"></div></div>
-</div>
-
-<section id="start" class="card">
-<h2>🎮 Mission: Discover the Kapaligiran!</h2>
-<p>Students work in pairs or groups. Scan an <b>Environment Card QR code</b> using the camera. The game reveals an AR-style environment and a challenge.</p>
-<ol>
-<li>Allow camera access.</li>
-<li>Point the camera at an Environment Card QR code.</li>
-<li>Explore the AR scene.</li>
-<li>Answer the challenge to earn points.</li>
-</ol>
-<div class="controls">
-<button onclick="startScanner()">📷 Start AR Scanner</button>
-<button class="secondary" onclick="demoMode()">▶ Try Demo Mode</button>
-</div>
-<p class="small">Tip: Print the four cards included with this game, or display a card on another screen.</p>
-</section>
-
-<section id="scanner" class="card hidden">
-<h2>📷 Scan an Environment Card</h2>
-<div id="cameraBox"><video id="video" playsinline></video><div class="scanline"></div></div>
-<div id="status">Point the camera at a QR code…</div>
-<div class="controls">
-<button class="secondary" onclick="stopScanner()">Stop Camera</button>
-<button class="gold" onclick="manualCode()">Enter Code Manually</button>
-</div>
-</section>
-
-<section id="scene" class="card hidden">
-<h2>✨ AR Environment Unlocked!</h2>
-<div id="arScene" class="arScene">
-  <div class="hotspot h1" id="hot1">👀 Observe</div>
-  <div class="hotspot h2" id="hot2">👥 People</div>
-  <div class="hotspot h3" id="hot3">🌱 Resources</div>
-  <div>
-    <div class="sceneTitle" id="sceneTitle"></div>
-    <div class="sceneText" id="sceneText"></div>
+  <div id="cameraBox">
+    <video id="video" playsinline autoplay muted></video>
+    <div class="scanFrame"></div>
   </div>
-</div>
-<div class="controls" style="margin-top:14px">
-<button class="green" onclick="showChallenge()">🎯 Take the Challenge</button>
-</div>
+  <div id="scanStatus" class="center">Starting camera…</div>
+  <div class="center" style="margin-top:10px">
+    <button onclick="startScanner()">📷 Start / Restart Scanner</button>
+  </div>
+  <p class="small center">After a valid QR code is recognized, the 3D environment and mission will automatically appear.</p>
 </section>
 
-<section id="challenge" class="card hidden">
-<h2>🎯 Kapaligiran Challenge</h2>
-<p id="question"></p>
-<div id="choices" class="choiceGrid"></div>
-<div id="feedback"></div>
-<div class="controls" style="margin-top:12px">
-<button id="nextBtn" class="gold hidden" onclick="nextEnvironment()">➡️ Continue Mission</button>
-</div>
+<!-- AR + MISSION ARE HIDDEN UNTIL QR SCAN -->
+<section id="arCard" class="card">
+  <div id="arStage">
+    <video id="camAR" playsinline autoplay muted></video>
+    <canvas id="world"></canvas>
+    <div class="arLabel" id="arLabel">✨ AR ENVIRONMENT</div>
+    <div class="hotspot a" id="hotA">👀 Observe</div>
+    <div class="hotspot b" id="hotB">👥 People</div>
+    <div class="hotspot c" id="hotC">🌱 Resources</div>
+    <div class="info">
+      <h2 id="envTitle"></h2>
+      <p id="envDescription"></p>
+    </div>
+  </div>
+  <div class="center" style="margin-top:10px">
+    <button class="gold" onclick="restartScan()">🔎 Scan Another Environment</button>
+  </div>
 </section>
 
-<section id="finish" class="card hidden">
-<h2>🏆 Mission Complete!</h2>
-<p id="finalMessage"></p>
-<div class="card" style="background:#f8fcf5">
-<h3>🌱 Reflection</h3>
-<p><b>How does your environment affect people's lives, and how do people's actions affect the environment?</b></p>
-<p class="small">Teacher can use this as a short oral sharing or exit ticket.</p>
-</div>
-<button onclick="location.reload()">🔄 Play Again</button>
+<section id="missionCard" class="card">
+  <h2>🎯 MISSION UNLOCKED</h2>
+  <div class="missionBox">
+    <b id="missionTitle"></b>
+    <p id="missionText"></p>
+  </div>
+  <div id="choices"></div>
+  <div id="feedback"></div>
 </section>
+
+<section id="complete" class="card center">
+  <h2>🏆 Mission Complete!</h2>
+  <p id="completeText"></p>
+  <button class="green" onclick="restartScan()">📷 Scan Next QR Code</button>
+</section>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
-const DATA={
- RIVER:{name:"RIVER / ILOG",class:"river",text:"People use rivers for water, fishing, transportation and livelihood. Clean rivers support communities; pollution harms both people and nature.",q:"A community's river is becoming polluted. Which action shows responsible interaction with the environment?",choices:["Throw more waste because the river carries it away.","Organize clean-up activities and reduce waste entering the river.","Ignore the problem because the river is natural.","Use more plastic near the river."],answer:1},
- CITY:{name:"URBAN / LUNGSOD",class:"city",text:"People build homes, roads, businesses and schools in cities. Urban life depends on planning, clean spaces, safe transport and responsible use of resources.",q:"Which action helps people and the urban environment live in balance?",choices:["Plant trees and use proper waste segregation.","Block drainage with garbage.","Burn waste beside houses.","Use public spaces as dumping areas."],answer:0},
- FOREST:{name:"FOREST / KAGUBATAN",class:"forest",text:"Forests provide wood, food, biodiversity, water protection and other resources. People benefit from forests, so sustainable use and protection are important.",q:"People need forest resources. What is the most sustainable response?",choices:["Cut every tree in one area.","Take resources without limits.","Use resources responsibly and protect/replant forests.","Burn the forest to clear land quickly."],answer:2},
- MARINE:{name:"MARINE / DAGAT",class:"marine",text:"People depend on seas and coasts for food, transportation, livelihood and recreation. Healthy marine ecosystems support both communities and wildlife.",q:"A fishing community wants its livelihood to continue for future generations. What should it do?",choices:["Catch every fish possible.","Protect breeding areas and follow sustainable fishing practices.","Dump waste into the sea.","Destroy coral habitats."],answer:1}
+const ENV={
+RIVER:{
+ title:"🌊 RIVER / ILOG",
+ desc:"People depend on rivers for water, food, transportation and livelihood. A healthy river supports both communities and wildlife.",
+ mission:"The river is becoming polluted. Which action best protects the river while helping the community?",
+ choices:["Organize a clean-up and prevent waste from entering the river.","Throw garbage downstream.","Use destructive fishing methods.","Ignore the pollution."], answer:0,
+ labels:["🐟 Fish","👨‍🌾 Fisherfolk","💧 Freshwater"]
+},
+CITY:{
+ title:"🏙️ URBAN / LUNGSOD",
+ desc:"People build homes, schools, roads and businesses in cities. Good planning helps people use urban resources without damaging the environment.",
+ mission:"Your neighborhood is crowded and has little green space. What should the community do?",
+ choices:["Add trees and green spaces while managing waste properly.","Remove all plants for more parking.","Burn garbage in open areas.","Block drainage with waste."], answer:0,
+ labels:["🏢 Buildings","🚶 People","🌳 Green space"]
+},
+FOREST:{
+ title:"🌳 FOREST / KAGUBATAN",
+ desc:"Forests provide habitats, food, water protection and other resources. People must use forest resources responsibly.",
+ mission:"The community needs forest resources. Which choice shows sustainable interaction?",
+ choices:["Use resources responsibly and replant/protect trees.","Cut every tree in one area.","Capture wild animals for pets.","Burn the forest to clear it."], answer:0,
+ labels:["🦌 Deer","🐦 Bird","🌲 Trees"]
+},
+MARINE:{
+ title:"🐠 MARINE / DAGAT",
+ desc:"People depend on the sea for food, transportation, livelihood and recreation. Healthy marine ecosystems are essential to coastal communities.",
+ mission:"A fishing community wants fish to remain available in the future. What should it do?",
+ choices:["Protect breeding areas and follow sustainable fishing practices.","Catch every fish possible.","Throw plastic into the sea.","Damage coral habitats."], answer:0,
+ labels:["🐟 Fish","🪸 Coral","⛵ Boat"]
+},
+FARM:{
+ title:"🐄 FARM / SAKAHAN",
+ desc:"Farms provide food and livelihoods. People interact with soil, water, plants and animals to produce resources for communities.",
+ mission:"A farm wants to remain productive while caring for animals and the environment. What is the best action?",
+ choices:["Care for animals, protect soil and water, and use resources responsibly.","Overuse chemicals and waste water.","Leave animal waste in waterways.","Overgraze the land."], answer:0,
+ labels:["🐄 Cow","🐔 Chicken","🌾 Crops"]
+}
 };
-let score=0,found=new Set(),current=null,stream=null,scanning=false,answered=false;
 
-function startScanner(){
- document.getElementById('start').classList.add('hidden');
- document.getElementById('scanner').classList.remove('hidden');
- const video=document.getElementById('video');
- navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}}}).then(s=>{
-   stream=s; video.srcObject=s; video.play(); scanning=true; requestAnimationFrame(scan);
- }).catch(()=>{document.getElementById('status').textContent="Camera unavailable. Use Demo Mode or Enter Code Manually.";});
-}
-function stopScanner(){scanning=false;if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;}
-function scan(){
- if(!scanning)return;
- const v=document.getElementById('video');
- if(v.readyState>=2){
-  const c=document.createElement('canvas'),x=c.getContext('2d');
-  c.width=v.videoWidth;c.height=v.videoHeight;x.drawImage(v,0,0,c.width,c.height);
-  const img=x.getImageData(0,0,c.width,c.height),code=jsQR(img.data,img.width,img.height);
-  if(code){handleCode(code.data);return;}
+let current=null,stream=null,scanning=false,scene,cam3d,renderer,objects=[],answered=false;
+
+function setStatus(t){document.getElementById("scanStatus").textContent=t}
+async function startScanner(){
+ stopScanner();
+ try{
+  stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}});
+  const v=document.getElementById("video");v.srcObject=stream;await v.play();
+  scanning=true;setStatus("🔎 Scanning… point at a QR Environment Card.");requestAnimationFrame(scanQR);
+ }catch(e){
+  setStatus("⚠️ Camera unavailable. Allow camera access and use HTTPS, or open this game in a browser that supports camera access.");
  }
- requestAnimationFrame(scan);
 }
-function manualCode(){
- const code=prompt("Enter card code: RIVER, CITY, FOREST, or MARINE");
- if(code)handleCode(code.trim().toUpperCase());
+function stopScanner(){scanning=false;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
+function scanQR(){
+ if(!scanning)return;
+ const v=document.getElementById("video");
+ if(v.readyState>=2 && v.videoWidth){
+  const c=document.createElement("canvas"),x=c.getContext("2d");
+  c.width=v.videoWidth;c.height=v.videoHeight;x.drawImage(v,0,0,c.width,c.height);
+  const img=x.getImageData(0,0,c.width,c.height);
+  const qr=jsQR(img.data,img.width,img.height,{inversionAttempts:"dontInvert"});
+  if(qr){
+   const key=qr.data.trim().toUpperCase().replace(/^.*[:#\/]/,"");
+   if(ENV[key]){openEnvironment(key);return}
+   setStatus("❌ QR recognized, but it is not a Kapaligiran Environment Card.");
+  }
+ }
+ requestAnimationFrame(scanQR);
 }
-function demoMode(){
- document.getElementById('start').classList.add('hidden');
- document.getElementById('scanner').classList.remove('hidden');
- document.getElementById('status').innerHTML="Demo Mode: choose an environment.";
- const box=document.getElementById('cameraBox');box.innerHTML='<div style="padding:55px;text-align:center;color:white;font-size:28px">📱 AR Scanner Demo</div>';
- const b=document.createElement('div');b.className='choiceGrid';b.style.marginTop='15px';
- Object.keys(DATA).forEach(k=>{let x=document.createElement('button');x.className='choice';x.textContent=DATA[k].name;x.onclick=()=>handleCode(k);b.appendChild(x)});
- document.getElementById('scanner').appendChild(b);
+
+function openEnvironment(key){
+ current=key;stopScanner();
+ document.getElementById("scannerCard").classList.add("hidden");
+ document.getElementById("arCard").style.display="block";
+ document.getElementById("missionCard").style.display="block";
+ document.getElementById("complete").style.display="none";
+ const d=ENV[key];
+ document.getElementById("envTitle").textContent=d.title;
+ document.getElementById("envDescription").textContent=d.desc;
+ document.getElementById("missionTitle").textContent="Mission: Interaksyon ng Tao at Kapaligiran";
+ document.getElementById("missionText").textContent=d.mission;
+ document.getElementById("hotA").textContent=d.labels[0];
+ document.getElementById("hotB").textContent=d.labels[1];
+ document.getElementById("hotC").textContent=d.labels[2];
+ const choices=document.getElementById("choices");choices.innerHTML="";
+ d.choices.forEach((t,i)=>{
+  const b=document.createElement("button");b.className="choice";b.textContent=String.fromCharCode(65+i)+". "+t;
+  b.onclick=()=>answer(i,b);choices.appendChild(b);
+ });
+ document.getElementById("feedback").innerHTML="";
+ document.getElementById("feedback").className="";
+ buildWorld();animate();
 }
-function handleCode(code){
- const key=code.includes(':')?code.split(':').pop().toUpperCase():code.toUpperCase();
- if(!DATA[key]){document.getElementById('status').textContent="Unknown card. Try RIVER, CITY, FOREST, or MARINE.";return;}
- stopScanner(); current=key; found.add(key); renderScene(); 
-}
-function renderScene(){
- const d=DATA[current];
- document.getElementById('scanner').classList.add('hidden');
- document.getElementById('scene').classList.remove('hidden');
- const s=document.getElementById('arScene');s.className='arScene '+d.class;
- document.getElementById('sceneTitle').textContent=d.name;
- document.getElementById('sceneText').textContent=d.text;
- document.getElementById('hot1').textContent="👀 Observe "+d.name;
- document.getElementById('hot2').textContent="👥 People";
- document.getElementById('hot3').textContent="🌱 Resources";
- document.getElementById('found').textContent=found.size;
- document.getElementById('progressFill').style.width=(found.size/4*100)+'%';
-}
-function showChallenge(){
- const d=DATA[current];answered=false;
- document.getElementById('scene').classList.add('hidden');document.getElementById('challenge').classList.remove('hidden');
- document.getElementById('question').textContent=d.q;
- const c=document.getElementById('choices');c.innerHTML='';
- d.choices.forEach((t,i)=>{let b=document.createElement('button');b.className='choice';b.textContent=t;b.onclick=()=>answer(i,b);c.appendChild(b)});
- document.getElementById('feedback').innerHTML='';document.getElementById('nextBtn').classList.add('hidden');
-}
-function answer(i,btn){
+
+function answer(i,b){
  if(answered)return;answered=true;
- const d=DATA[current];const all=[...document.querySelectorAll('.choice')];
- all.forEach(x=>x.disabled=true);
- if(i===d.answer){score+=10;btn.classList.add('correct');document.getElementById('feedback').className='feedback correct';document.getElementById('feedback').textContent="✅ Correct! +10 points. You showed responsible interaction with the environment."}
- else{score=Math.max(0,score-3);btn.classList.add('wrong');all[d.answer].classList.add('correct');document.getElementById('feedback').className='feedback wrong';document.getElementById('feedback').textContent="❌ Not quite. −3 points. Think about how people and the environment affect each other."}
- document.getElementById('score').textContent=score;document.getElementById('level').textContent=Math.min(4,1+Math.floor(found.size/2));document.getElementById('nextBtn').classList.remove('hidden');
+ const d=ENV[current];document.querySelectorAll(".choice").forEach(x=>x.disabled=true);
+ if(i===d.answer){
+  b.classList.add("correct");document.getElementById("feedback").className="success";
+  document.getElementById("feedback").textContent="✅ Correct! You recognized a responsible interaction between people and the environment.";
+ }else{
+  b.classList.add("wrong");document.querySelectorAll(".choice")[d.answer].classList.add("correct");
+  document.getElementById("feedback").className="error";
+  document.getElementById("feedback").textContent="❌ Think again: choose the action that protects resources while meeting people's needs.";
+ }
+ document.getElementById("complete").style.display="block";
+ document.getElementById("completeText").textContent=i===d.answer?"Excellent! You completed the mission.":"Mission reviewed! Study the AR environment and discuss why the correct action is sustainable.";
 }
-function nextEnvironment(){
- if(found.size===4){document.getElementById('challenge').classList.add('hidden');document.getElementById('finish').classList.remove('hidden');document.getElementById('finalMessage').textContent=`You explored all four environments and earned ${score} points! ${score>=32?"Excellent! You understand the connection between people and their environment.":"Good job! Discuss which human actions can make each environment healthier."}`;return;}
- document.getElementById('challenge').classList.add('hidden');document.getElementById('scanner').classList.remove('hidden');
- document.getElementById('cameraBox').innerHTML='<video id="video" playsinline></video><div class="scanline"></div>';
- document.getElementById('status').textContent="Scan the next Environment Card…";
- startScanner();
+
+function restartScan(){
+ answered=false;stopScanner();
+ document.getElementById("arCard").style.display="none";
+ document.getElementById("missionCard").style.display="none";
+ document.getElementById("complete").style.display="none";
+ document.getElementById("scannerCard").classList.remove("hidden");
+ setStatus("Starting camera…");startScanner();
 }
+
+/* ---------- 3D AR WORLD ---------- */
+function initThree(){
+ if(scene)return;
+ scene=new THREE.Scene();
+ cam3d=new THREE.PerspectiveCamera(55,1,.1,100);cam3d.position.set(0,3,9);
+ renderer=new THREE.WebGLRenderer({canvas:document.getElementById("world"),alpha:true,antialias:true});
+ renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+ scene.add(new THREE.HemisphereLight(0xffffff,0x5b7768,2.3));
+ const dl=new THREE.DirectionalLight(0xffffff,2.4);dl.position.set(5,9,6);scene.add(dl);
+ window.addEventListener("resize",resize3D);resize3D();
+}
+function resize3D(){
+ if(!renderer)return;const r=document.getElementById("world").getBoundingClientRect();
+ renderer.setSize(r.width,r.height,false);cam3d.aspect=r.width/r.height;cam3d.updateProjectionMatrix();
+}
+function material(c){return new THREE.MeshStandardMaterial({color:c,roughness:.75})}
+function addBox(x,y,z,s,c,rot=0){let m=new THREE.Mesh(new THREE.BoxGeometry(...s),material(c));m.position.set(x,y,z);m.rotation.y=rot;scene.add(m);objects.push(m);return m}
+function addSphere(x,y,z,r,c){let m=new THREE.Mesh(new THREE.SphereGeometry(r,20,14),material(c));m.position.set(x,y,z);scene.add(m);objects.push(m);return m}
+function addCyl(x,y,z,r,h,c){let m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,18),material(c));m.position.set(x,y,z);scene.add(m);objects.push(m);return m}
+function tree(x,z,scale=1){
+ addCyl(x,.7*scale,z,.13*scale,1.4*scale,0x70452b);
+ addSphere(x,1.55*scale,z,.7*scale,0x2f8248);
+ addSphere(x-.35*scale,1.35*scale,z,.5*scale,0x3c9652);
+ addSphere(x+.35*scale,1.35*scale,z,.5*scale,0x3c9652);
+}
+function fish(x,y,z,s=1){
+ addSphere(x,y,z,.23*s,0xffbd3e);
+ addSphere(x-.23*s,y,z,.14*s,0xff8b35);
+ let tail=addBox(x+.28*s,y,z,[.28*s,.18*s,.08*s],0xff8b35,.5);
+ return tail;
+}
+function cow(x,z,s=1){
+ // simple stylized 3D cow
+ addSphere(x,.9*s,z,.62*s,0xf3f0e6);
+ addSphere(x+.6*s,1.15*s,z,.34*s,0x332c27);
+ addSphere(x+.64*s,1.15*s,z,.20*s,0xf3f0e6);
+ for(const dx of [-.35,.35])for(const dz of [-.25,.25])addCyl(x+dx*s,.42*s,z+dz*s,.09*s,.75*s,0x292522);
+ addSphere(x-.15*s,1.05*s,z+.48*s,.16*s,0x292522);
+ addSphere(x+.15*s,1.05*s,z+.48*s,.16*s,0x292522);
+}
+function chicken(x,z,s=1){
+ addSphere(x,.65*s,z,.35*s,0xf1eee2);
+ addSphere(x+.32*s,.82*s,z,.18*s,0xf1eee2);
+ addSphere(x+.48*s,.82*s,z,.08*s,0xd87b2d);
+ addSphere(x+.32*s,1.02*s,z,.07*s,0xd94444);
+ addCyl(x+.05*s,.25*s,z,.04*s,.35*s,0xd87b2d);
+ addCyl(x+.22*s,.25*s,z,.04*s,.35*s,0xd87b2d);
+}
+function buildWorld(){
+ initThree();objects.forEach(o=>scene.remove(o));objects=[];
+ const base={RIVER:0x4f9b61,CITY:0x89959b,FOREST:0x4a914e,MARINE:0x087fa3,FARM:0x6b9e51}[current];
+ addBox(0,-.25,0,[9,.45,6],base);
+ if(current==="RIVER"){
+  addBox(0,-.01,0,[2.8,.08,6],0x2a91c9);
+  for(let z=-2;z<=2;z+=2)fish(-.5,.15,z,1);
+  for(let x of [-3.3,3.3])for(let z of [-2,0,2])tree(x,z,.85);
+  addBox(0,.12,-2.6,[1.2,.18,.7],0x8b5a2b);
+ }else if(current==="CITY"){
+  addBox(0,.02,2.1,[8,.12,1.5],0x353c42);
+  for(let x of [-3,-1,1,3]){let h=1.7+(Math.abs(x)%2)*.7;addBox(x,h/2,-.2,[1.25,h,1.3],0x91a5b1);for(let y=.5;y<h;y+=.6)addBox(x,y,-.87,[.2,.24,.04],0xf4db68)}
+  tree(-3,2.6,.65);tree(3,2.6,.65);
+  addBox(-.8,.4,2.1,[.9,.25,.45],0xd94b3f);addBox(.8,.4,2.1,[.9,.25,.45],0x3e6fb0);
+ }else if(current==="FOREST"){
+  for(let x of [-3,-1.5,0,1.5,3])for(let z of [-1.8,0,1.8])tree(x,z,.85);
+  // deer
+  addSphere(0,.95,0,.58,0x9a673c);addSphere(.58,1.3,0,.3,0x9a673c);
+  for(let x of [-.3,.3])for(let z of [-.22,.22])addCyl(x,.42,z,.07,.75,0x68452d);
+  // bird
+  addSphere(-2,2.4,-.5,.16,0x4a5fa8);
+ }else if(current==="MARINE"){
+  for(let x of [-3,-1.5,0,1.5,3]){addCyl(x,.45,0,.12,.9,0xe15b63);addSphere(x,.9,0,.32,0xe15b63)}
+  for(let i=0;i<9;i++)fish(-3+(i%5)*1.5,.45,-2+(i%3)*1.7,.75);
+  addBox(0,1.45,-1,[2,.22,.7],0x8a5a2c);addCyl(0,2.15,-1,.04,1.35,0xf5f2df);
+ }else if(current==="FARM"){
+  for(let x of [-3,-1,1,3])for(let z of [-1.8,0,1.8])addBox(x,.03,z,[.75,.1,1.2],0x8d6a39);
+  cow(-1.8,-.7,1);cow(1.8,.8,.9);chicken(-2.8,1.8,1);chicken(2.8,-1.5,1);
+  for(let x of [-3,-1,1,3])tree(x,-2.6,.6);
+  addBox(0,.65,-1.4,[2.2,1.3,.8],0xc85c3e);
+ }
+}
+function animate(){
+ if(!renderer)return;requestAnimationFrame(animate);
+ objects.forEach((o,i)=>{o.rotation.y+=0.0015*(i%3+1)});
+ renderer.render(scene,cam3d);
+}
+selectEnvForStart=null;
+async function boot(){await startScanner()}
+boot();
 </script>
 </body>
 </html>
