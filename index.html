@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AR Kapaligiran Quest</title>
+<title>AR: Tuklasin ang Kapaligiran</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#e7f7ff,#effbea);color:#17394e}
@@ -57,8 +57,8 @@ button.green{background:#2e8254} button.gold{background:#efc044;color:#17394e}
 </head>
 <body>
 <header>
-<h1>🌎 AR KAPALIGIRAN QUEST</h1>
-<p>Napahahalagahan ang interaksyon ng tao sa kaniyang kapaligiran</p>
+<h1>🌎 AR: Tuklasin ang Kapaligiran</h1>
+<p>Napahahalagahan ang Interaksyon ng Tao sa Kaniyang Kapaligiran</p>
 </header>
 
 <div class="wrap">
@@ -66,20 +66,20 @@ button.green{background:#2e8254} button.gold{background:#efc044;color:#17394e}
 <!-- STUDENT VIEW: NOTHING IS REVEALED UNTIL A QR CODE IS SCANNED -->
 <section id="scannerCard" class="card">
   <div class="center">
-    <span class="badge">📱 STUDENT AR SCANNER</span>
-    <h2>Scan the Kapaligiran QR Code</h2>
-    <p>Point your phone camera at the QR card provided by your teacher.</p>
+    <span class="badge">📱 AR SCANNER NG MAG-AARAL</span>
+    <h2>I-scan ang QR Code at Tuklasin ang Kapaligiran</h2>
+    <p>Itutok ang kamera sa QR Code na ibinigay ng guro.</p>
   </div>
   <div id="cameraBox">
     <video id="video" playsinline autoplay muted></video>
     <div class="scanFrame"></div>
   </div>
-  <div id="scanStatus" class="center">Starting camera…</div>
+  <div id="scanStatus" class="center">Sinisimulan ang kamera… Mangyaring maghintay.</div>
   <div class="center" style="margin-top:10px">
-    <button onclick="startScanner()">📷 Start / Restart Scanner</button>
+    <button onclick="startScanner()">📷 Simulan / I-restart ang Pag-scan</button>
   </div>
-  <p class="small center">After a valid QR code is recognized, the 3D environment and mission will automatically appear.</p>
-  <p class="small center">Prepared by: John Ivan L. Garibay, Marenil Peñaverde, and Edilberto Pangilinan Jr.</p>
+  <p class="small center">Kapag nakilala na ang wastong QR Code, awtomatikong lalabas ang 3D na kapaligiran at misyon.</p>
+  <p class="small center">Inihanda nina: John Ivan L. Garibay, Marenil Peñaverde, at Edilberto Pangilinan Jr.</p>
 </section>
 
 <!-- AR + MISSION ARE HIDDEN UNTIL QR SCAN -->
@@ -87,10 +87,10 @@ button.green{background:#2e8254} button.gold{background:#efc044;color:#17394e}
   <div id="arStage">
     <video id="camAR" playsinline autoplay muted></video>
     <canvas id="world"></canvas>
-    <div class="arLabel" id="arLabel">✨ AR ENVIRONMENT</div>
-    <div class="hotspot a" id="hotA">👀 Observe</div>
-    <div class="hotspot b" id="hotB">👥 People</div>
-    <div class="hotspot c" id="hotC">🌱 Resources</div>
+    <div class="arLabel" id="arLabel">✨ AR NA KAPALIGIRAN</div>
+    <div class="hotspot a" id="hotA">👀 Obserbahan</div>
+    <div class="hotspot b" id="hotB">👥 Tao</div>
+    <div class="hotspot c" id="hotC">🌱 Likas na Yaman</div>
     <div class="info">
       <h2 id="envTitle"></h2>
       <p id="envDescription"></p>
@@ -101,12 +101,12 @@ button.green{background:#2e8254} button.gold{background:#efc044;color:#17394e}
     <p id="envDescriptionBelow"></p>
   </div>
   <div class="center" style="margin-top:10px">
-    <button class="gold" onclick="restartScan()">🔎 Scan Another Environment</button>
+    <button class="gold" onclick="restartScan()">🔎 Mag-scan ng Ibang Kapaligiran</button>
   </div>
 </section>
 
 <section id="missionCard" class="card">
-  <h2>🎯 MISSION UNLOCKED</h2>
+  <h2>🎯 NAKABUKAS NA ANG MISYON!</h2>
   <div class="missionBox">
     <b id="missionTitle"></b>
     <p id="missionText"></p>
@@ -116,18 +116,18 @@ button.green{background:#2e8254} button.gold{background:#efc044;color:#17394e}
 </section>
 
 <section id="complete" class="card center">
-  <h2>🎯 Mission Result</h2>
+  <h2>🎯 RESULTA NG MISYON</h2>
   <p id="completeText"></p>
-  <button class="green" onclick="restartScan()">📷 Scan Next QR Code</button>
+  <button class="green" onclick="restartScan()">📷 I-scan ang Susunod na QR Code</button>
 </section>
 
 <section id="finalScreen" class="card">
-  <div class="thanks">THANK YOU! 🌎💚</div>
-  <h2>You discovered all <span class="qrCount" id="finalCount">6</span> Kapaligiran QR environments!</h2>
+  <div class="thanks">Maraming Salamat! 🌎💚</div>
+  <h2>Natuklasan Mo Na ang <span class="qrCount" id="finalCount">6</span> Kapaligiran!</h2>
   <p>Mahusay! Natuklasan mo kung paano nakikipag-ugnayan ang tao sa iba't ibang kapaligiran.</p>
   <p><b>Napahahalagahan ang interaksyon ng tao sa kaniyang kapaligiran.</b></p>
   <p>John Ivan Garibay, Marenil Peñaverde, and Edilberto Pangilinan Jr.</p>
-  <button class="green" onclick="playAgain()">🔄 Do you want to play again?</button>
+  <button class="green" onclick="playAgain()">🔄 Gusto Mo Bang Maglaro Muli?</button>
 </section>
 
 </div>
@@ -137,46 +137,46 @@ button.green{background:#2e8254} button.gold{background:#efc044;color:#17394e}
 <script>
 const ENV={
 RIVER:{
- title:"🌊 RIVER / ILOG",
- desc:"People depend on rivers for water, food, transportation and livelihood. A healthy river supports both communities and wildlife.",
- mission:"The river is becoming polluted. Which action best protects the river while helping the community?",
- choices:["Organize a clean-up and prevent waste from entering the river.","Throw garbage downstream.","Use destructive fishing methods.","Ignore the pollution."], answer:0,
- labels:["🐟 Fish","👨‍🌾 Fisherfolk","💧 Freshwater"]
+ title:"🌊 ILOG",
+ desc:"Umaasa ang mga tao sa mga ilog para sa tubig, pagkain, transportasyon, at kabuhayan. Ang malinis at malusog na ilog ay nakatutulong sa mga pamayanan at mga hayop.",
+ mission:"Nagiging marumi na ang ilog. Aling gawain ang pinakamainam upang maprotektahan ang ilog habang nakatutulong sa pamayanan?",
+ choices:["Magsagawa ng paglilinis at pigilan ang pagpasok ng basura sa ilog.","Itapon ang basura sa ibabang bahagi ng ilog.","Gumamit ng mapaminsalang paraan ng pangingisda.","Huwag pansinin ang polusyon."], answer:0,
+ labels:["🐟 Isda","👨‍🌾 Mangingisda","💧 Tubig-tabang"]
 },
 CITY:{
- title:"🏙️ URBAN / LUNGSOD",
- desc:"People build homes, schools, roads and businesses in cities. Good planning helps people use urban resources without damaging the environment.",
- mission:"Your neighborhood is crowded and has little green space. What should the community do?",
- choices:["Add trees and green spaces while managing waste properly.","Remove all plants for more parking.","Burn garbage in open areas.","Block drainage with waste."], answer:0,
- labels:["🏢 Buildings","🚶 People","🌳 Green space"]
+ title:"🏙️ LUNGSOD",
+ desc:"Ang mga tao ay nagtatayo ng mga tahanan, paaralan, kalsada, at negosyo sa mga lungsod. Ang maayos na pagpaplano ay tumutulong sa mga tao na magamit nang wasto ang mga yaman ng lungsod nang hindi nasisira ang kapaligiran.",
+ mission:"Matao na ang inyong pamayanan at kakaunti ang mga luntiang lugar. Ano ang dapat gawin ng komunidad?",
+ choices:["Magtanim ng mga puno at maglaan ng mga luntiang lugar habang pinamamahalaan nang maayos ang basura.","Alisin ang lahat ng halaman upang magkaroon ng mas maraming paradahan.","Magsunog ng basura sa mga bukas na lugar.","Harangan ang mga daluyan ng tubig gamit ang basura."], answer:0,
+ labels:["🏢 Gusali","🚶 Tao","🌳 Luntiang Lugar"]
 },
 FOREST:{
- title:"🌳 FOREST / KAGUBATAN",
- desc:"Forests provide habitats, food, water protection and other resources. People must use forest resources responsibly.",
- mission:"The community needs forest resources. Which choice shows sustainable interaction?",
- choices:["Use resources responsibly and replant/protect trees.","Cut every tree in one area.","Capture wild animals for pets.","Burn the forest to clear it."], answer:0,
- labels:["🦌 Deer","🐦 Bird","🌲 Trees"]
+ title:"🌳 KAGUBATAN",
+ desc:"Ang mga kagubatan ay nagbibigay ng tirahan sa mga hayop, pagkain, proteksiyon sa tubig, at iba pang likas na yaman. Kailangang gamitin ng mga tao nang responsable ang mga yaman ng kagubatan.",
+ mission:"Kailangan ng komunidad ang mga likas na yaman mula sa kagubatan. Aling pagpipilian ang nagpapakita ng napapanatiling pakikipag-ugnayan sa kapaligiran?",
+ choices:["Gamitin nang responsable ang mga likas na yaman at magtanim muli at magprotekta ng mga puno.","Putulin ang lahat ng puno sa isang lugar.","Hulihin ang mga ligaw na hayop upang gawing alagang hayop.","Sunugin ang kagubatan upang linisin at bakantehin ang lugar."], answer:0,
+ labels:["🦌 Usa","🐦 Ibon","🌲 Puno"]
 },
 MARINE:{
- title:"🐠 MARINE / DAGAT",
- desc:"People depend on the sea for food, transportation, livelihood and recreation. Healthy marine ecosystems are essential to coastal communities.",
- mission:"A fishing community wants fish to remain available in the future. What should it do?",
- choices:["Protect breeding areas and follow sustainable fishing practices.","Catch every fish possible.","Throw plastic into the sea.","Damage coral habitats."], answer:0,
- labels:["🐟 Fish","🪸 Coral","⛵ Boat"]
+ title:"🐠 DAGAT",
+ desc:"Umaasa ang mga tao sa dagat para sa pagkain, transportasyon, kabuhayan, at libangan. Mahalaga ang malusog na yamang-dagat sa mga pamayanang malapit sa baybayin.",
+ mission:"Nais ng isang pamayanang nangingisda na manatiling sapat ang dami ng isda sa hinaharap. Ano ang dapat nitong gawin?",
+ choices:["Pangalagaan ang mga lugar na pinangingitlugan at sundin ang napapanatiling pamamaraan ng pangingisda.","Hulihin ang lahat ng isda na maaari.","Itapon ang plastik sa dagat.","Sirain ang mga tirahan ng mga korales."], answer:0,
+ labels:["🐟 Isa","🪸 Korales","⛵ Bangka"]
 },
 DESERT:{
- title:"🏜️ DESERT / TUYONG LUGAR",
- desc:"Dry areas have very little water. People, plants and animals must adapt and use scarce water carefully.",
- mission:"A community in a dry area has limited water. Which action shows responsible interaction with the environment?",
- choices:["Conserve water and use drought-resistant plants.","Waste water because more may arrive later.","Remove all plants from the area.","Pollute the only available water source."], answer:0,
- labels:["🐪 Animal","🌵 Cactus","💧 Water"]
+ title:"🏜️ TUYONG LUGAR",
+ desc:"Ang mga tuyong lugar ay may napakakaunting tubig. Kailangang umangkop ang mga tao, halaman, at hayop at maingat na gamitin ang limitadong suplay ng tubig.",
+ mission:"May limitadong tubig ang isang pamayanan sa tuyong lugar. Alin sa mga sumusunod ang nagpapakita ng responsableng pakikitungo sa kapaligiran?",
+ choices:["Magtipid ng tubig at magtanim ng mga halamang kayang mabuhay sa tagtuyot.","Mag-aksaya ng tubig dahil baka magkaroon naman nito sa hinaharap.","Alisin ang lahat ng halaman sa lugar.","Polusyunin ang tanging pinagkukunan ng tubig."], answer:0,
+ labels:["🐪 Hayop","🌵 Cactus","💧 Tubig"]
 },
 FARM:{
- title:"🐄 FARM / SAKAHAN",
- desc:"Farms provide food and livelihoods. People interact with soil, water, plants and animals to produce resources for communities.",
- mission:"A farm wants to remain productive while caring for animals and the environment. What is the best action?",
- choices:["Care for animals, protect soil and water, and use resources responsibly.","Overuse chemicals and waste water.","Leave animal waste in waterways.","Overgraze the land."], answer:0,
- labels:["🐄 Cow","🐔 Chicken","🌾 Crops"]
+ title:"🐄 SAKAHAN",
+ desc:"Ang mga sakahan ay nagbibigay ng pagkain at kabuhayan. Nakikipag-ugnayan ang mga tao sa lupa, tubig, halaman, at hayop upang makalikha ng mga yamang kailangan ng pamayanan.",
+ mission:"Nais ng isang sakahan na manatiling produktibo habang inaalagaan ang mga hayop at kapaligiran. Ano ang pinakamainam na gawin?",
+ choices:["Alagaan ang mga hayop, pangalagaan ang lupa at tubig, at gamitin nang responsable ang mga likas na yaman.","Labis na gumamit ng mga kemikal at mag-aksaya ng tubig.","Hayaang mapunta ang dumi ng mga hayop sa mga daluyan ng tubig.","Labis na pakainin ang mga hayop sa pastulan hanggang masira ang lupa."], answer:0,
+ labels:["🐄 Baka","🐔 Manok","🌾 Mga Panananim"]
 }
 };
 
@@ -190,9 +190,9 @@ async function startScanner(){
  try{
   stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}});
   const v=document.getElementById("video");v.srcObject=stream;await v.play();
-  scanning=true;setStatus("🔎 Scanning… point at a QR Environment Card.");requestAnimationFrame(scanQR);
+  scanning=true;setStatus("🔎 Nagiis-scan… itutok ang camera sa QR Card ng Kapaligiran.");requestAnimationFrame(scanQR);
  }catch(e){
-  setStatus("⚠️ Camera unavailable. Allow camera access and use HTTPS, or open this game in a browser that supports camera access.");
+  setStatus("⚠️ Hindi gumagana ang camera. I-enable ang camera permission at tiyaking HTTPS ang gamit, o gumamit ng browser na sumusuporta sa camera.");
  }
 }
 function stopScanner(stopTracks=true){scanning=false;if(stopTracks && stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
@@ -207,7 +207,7 @@ function scanQR(){
   if(qr){
    const key=qr.data.trim().toUpperCase().replace(/^.*[:#\/]/,"");
    if(ENV[key]){openEnvironment(key);return}
-   setStatus("❌ QR recognized, but it is not a Kapaligiran Environment Card.");
+   setStatus("❌ Nabasa ang QR code, pero hindi ito valid na Kapaligiran Environment Card.");
   }
  }
  requestAnimationFrame(scanQR);
@@ -249,11 +249,11 @@ function answer(i,b){
  const d=ENV[current];document.querySelectorAll(".choice").forEach(x=>x.disabled=true);
  if(i===d.answer){
   b.classList.add("correct");document.getElementById("feedback").className="success";
-  document.getElementById("feedback").textContent="✅ Correct! You recognized a responsible interaction between people and the environment.";
+  document.getElementById("feedback").textContent="✅ Tama! Nakilala mo ang wastong paraan ng pakikipag-ugnayan ng tao sa kapaligiran.";
  }else{
   b.classList.add("wrong");document.querySelectorAll(".choice")[d.answer].classList.add("correct");
   document.getElementById("feedback").className="error";
-  document.getElementById("feedback").textContent="❌ Think again: choose the action that protects resources while meeting people's needs.";
+  document.getElementById("feedback").textContent="❌ Pag-isipang muli! Piliin ang kilos na nagpoprotekta sa mga likas na yaman habang natutugunan ang pangangailangan ng mga tao.";
  }
  if(scanned.size===TOTAL_QR){
    document.getElementById("complete").style.display="none";
@@ -264,7 +264,7 @@ function answer(i,b){
    stopScanner(true);
  }else{
    document.getElementById("complete").style.display="block";
-   document.getElementById("completeText").textContent=i===d.answer?"Excellent! You completed the mission.":"Mission reviewed! Study the AR environment and discuss why the correct action is sustainable.";
+   document.getElementById("completeText").textContent=i===d.answer?"Napakahusay! Natapos mo ang misyon!":"Balikan ang AR Environment at talakayin kung bakit napapanatili at responsable ang tamang kilos.";
  }
 }
 
